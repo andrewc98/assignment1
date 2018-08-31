@@ -1,0 +1,13 @@
+[
+    {
+        "channelName": "Food",
+        "users": [
+            "Super"
+            ,"Group"
+        ]
+    }
+    ,{
+        "channelName": "Sport",
+        "users": []
+    }
+]

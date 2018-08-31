@@ -1,0 +1,19 @@
+<!-- https://bootswatch.com/superhero/ -->
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">User Level</th>
+      <th scope="col">Channels</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <div *ngFor="let user of users">
+        <td>{{user.name}}</td>
+        <td>{{user.level}}</td>
+        <td>{{user.channels}}</td>
+      </div>
+    </tr>
+  </tbody>
+</table>
