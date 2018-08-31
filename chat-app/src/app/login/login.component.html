@@ -1,0 +1,17 @@
+<!-- https://bootswatch.com/superhero/ -->
+<div class="container" style="padding: 20px;">
+  <div class="card border-primary mb-3" style="max-width: 70rem;">
+    <div class="card-header">Login Form</div>
+      <div class="card-body">
+      <form (submit)="loginUser($event)">
+        <fieldset>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input [(ngModel)]="username" type="text" placeholder="Username" id="username" class="form-control" name="username">
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>

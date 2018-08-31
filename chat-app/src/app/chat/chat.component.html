@@ -1,0 +1,15 @@
+<!-- https://bootswatch.com/superhero/ -->
+<div class="container" style="padding: 20px;">
+  <div class="card border-primary mb-3" style="max-width: 100rem;">
+    <div class="card-header">Channel Chat</div>
+    <div class="card-body">
+      <div id="chat_history" style="height:500px">
+        <div *ngFor="let message of messages">
+          {{message.text}}
+        </div>
+      </div>
+      <input [(ngModel)]="message" type="text" placeholder="message" name="message" id="message" class="form-control">
+      <button (click)="sendMessage(message)" class="btn btn-primary" style="margin-top: 10px;">Send</button>
+    </div>
+  </div>
+</div>
