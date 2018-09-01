@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { ChatComponent } from './chat/chat.component';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { ManageChannelsComponent } from './manage-channels/manage-channels.component';
+import { ManageGroupsComponent } from './manage-groups/manage-groups.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ManageChannelsComponent } from './manage-channels/manage-channels.compo
     LoginComponent,
     ChatComponent,
     ManageUserComponent,
-    ManageChannelsComponent
+    ManageChannelsComponent,
+    ManageGroupsComponent
   ],
   imports: [
     BrowserModule,
