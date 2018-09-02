@@ -1,19 +1,30 @@
 <!-- https://bootswatch.com/superhero/ -->
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">User Level</th>
-      <th scope="col">Channels</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <div *ngFor="let user of users">
-        <td>{{user.name}}</td>
-        <td>{{user.level}}</td>
-        <td>{{user.channels}}</td>
+<div class="container" style="padding: 20px;">
+  <div class="card border-primary mb-3" style="max-width: 100rem;">
+    <div class="card-header">Login Form</div>
+    <div class="card-body">
+      <form (submit)="createChannel($event)">
+        <fieldset>
+          <div class="form-group">
+            <label>Channel Name</label>
+            <input [(ngModel)]="channelName" type="text" placeholder="Channel Name" id="channelName" class="form-control" name="channelName">
+          </div>
+          <button type="submit" class="btn btn-primary">Create Channel</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngFor="let channel of channels">
+  <div class="container" style="padding: 20px;">
+    <div class="card border-primary mb-3" style="max-width: 100em;">
+      <div class="card-header">{{channel.name}}</div>
+      <div class="card-body">
+        <div *ngFor="let user of channel.users">
+          {{user}}
+        </div>
       </div>
-    </tr>
-  </tbody>
-</table>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./manage-channels.component.css']
 })
 export class ManageChannelsComponent implements OnInit {
+  
+  public channels = [{
+    name: "Stories",
+    users: ["Jack", "Jill"]
+  },{
+    name: "Cooking",
+    users: ["Robin", "Huey"]
+  }];
 
   constructor(private router:Router) { }
 
@@ -15,5 +23,15 @@ export class ManageChannelsComponent implements OnInit {
       console.log("there is no username");
       this.router.navigateByUrl("home");
     }
+  }
+
+  /*
+    Author ------- Andrew Campbell
+    Date --------- 31/08/2018
+    Description -- This function will login the user, and redirect them to chat, only if they are a registered user.
+  */
+ loginUser(event){
+  event.preventDefault();
+  
   }
 }
