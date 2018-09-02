@@ -9,6 +9,10 @@
             <label>User Name</label>
             <input [(ngModel)]="nameUser" type="text" placeholder="User's Name" id="nameUser" class="form-control" name="nameUser">
           </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input [(ngModel)]="nameEmail" type="text" placeholder="Email Address" id="nameEmail" class="form-control" name="nameEmail">
+          </div>
           <button type="submit" class="btn btn-primary">Create User</button>
         </fieldset>
       </form>
@@ -16,12 +20,12 @@
   </div>
 </div>
   
-<div *ngFor="let knownuser of knownusers">
+<div *ngFor="let user of users">
   <div class="container" style="padding: 20px;">
     <div class="card border-primary mb-3" style="max-width: 100em;">
-      <div class="card-header">{{knownusers.name}}</div>
+      <div class="card-header">{{user.name}} - {{user.email}}</div>
       <div class="card-body">
-        Pow
+        {{user.channels}}
       </div>
     </div>
   </div>

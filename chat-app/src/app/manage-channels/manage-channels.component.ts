@@ -33,9 +33,9 @@ export class ManageChannelsComponent implements OnInit {
   */
  createChannel(event){
   event.preventDefault();
-    this.channels.push({
-      name: this.channelName,
-      users: ["Robin", "Huey"]
-    });
+  this.channels.push({
+    name: this.channelName,
+    users: ["Robin", "Huey"]
+  });
   }
 }
