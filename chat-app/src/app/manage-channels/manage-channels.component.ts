@@ -15,6 +15,7 @@ export class ManageChannelsComponent implements OnInit {
     name: "Cooking",
     users: ["Robin", "Huey"]
   }];
+  public channelName: string;
 
   constructor(private router:Router) { }
 
@@ -30,8 +31,11 @@ export class ManageChannelsComponent implements OnInit {
     Date --------- 31/08/2018
     Description -- This function will login the user, and redirect them to chat, only if they are a registered user.
   */
- loginUser(event){
+ createChannel(event){
   event.preventDefault();
-  
+    this.channels.push({
+      name: this.channelName,
+      users: ["Robin", "Huey"]
+    });
   }
 }
