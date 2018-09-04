@@ -1,0 +1,10 @@
+[
+    {
+        "group_name": "Sporting",
+        "channels": ["Rugby League", "Tennis"]
+    },
+    {
+        "group_name": "Cooking",
+        "channels": ["Italian", "French"]
+    }
+]
