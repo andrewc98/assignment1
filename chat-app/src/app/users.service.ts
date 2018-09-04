@@ -1,25 +1,17 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UsersService {
-  public knownusers = [
-    {
-      name: "Super",
-      email: "admin@gmail.com",
-      channels: ["Sport", "Business"]
-    },
-    {
-      name: "Group",
-      email: "jordan@gmail.com",
-      channels: ["Cooking", "Business"]
-    }
-  ];
-  constructor() { }
 
-  getUserJSON(){
+  constructor(private http:HttpClient) { }
 
+  getUsersJSON() {
+    console.log("2");
+    return this.http.get('http://localhost:3000/api/users');
   }
 }
