@@ -14,11 +14,10 @@ export class ManageUserComponent implements OnInit {
   public users;
   public nameUser: string;
   public nameEmail: string;
-  constructor(private userDetails: UsersService, private router:Router) { }
+  constructor(private _userDetails: UsersService, private router:Router) { }
 
   ngOnInit() {
-    console.log("HERER!");
-    // this.users = this.userDetails.knownusers;
+    // this.users = this._userDetails.knownusers;
     // if(!sessionStorage.getItem("username")){
     //   console.log("there is no username");
     //   this.router.navigateByUrl("home");
@@ -36,7 +35,7 @@ export class ManageUserComponent implements OnInit {
 
   getUsers() {
     console.log("1");
-    this.userDetails.getUsersJSON().subscribe(
+    this._userDetails.getUsersJSON().subscribe(
       data => { this.users = data},
       err => console.error(err),
       () => console.log('Found Users')
@@ -50,7 +49,7 @@ export class ManageUserComponent implements OnInit {
   */
   createUser(event) {
     // event.preventDefault();
-    // this.userDetails.knownusers.push({
+    // this._userDetails.knownusers.push({
     //   name: this.nameUser,
     //   email: this.nameEmail,
     //   channels: ["Pow"] //This is just a placeholder

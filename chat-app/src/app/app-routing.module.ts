@@ -4,6 +4,7 @@ import { ChatComponent } from './chat/chat.component';
 import { LoginComponent} from './login/login.component';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { ManageChannelsComponent } from './manage-channels/manage-channels.component';
+import { ManageGroupsComponent } from './manage-groups/manage-groups.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,8 @@ const routes: Routes = [
   {path:'', component:LoginComponent},   //Does this work?
   {path:'chat', component:ChatComponent},
   {path:'manage_user', component:ManageUserComponent},
-  {path:'manage_channels', component:ManageChannelsComponent}
+  {path:'manage_channels', component:ManageChannelsComponent},
+  {path:'manage_groups', component:ManageGroupsComponent}
 ];
 
 @NgModule({
