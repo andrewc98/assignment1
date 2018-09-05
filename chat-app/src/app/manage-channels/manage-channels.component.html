@@ -3,7 +3,7 @@
   <div class="card border-primary mb-3" style="max-width: 100rem;">
     <div class="card-header">Create Channel Form</div>
     <div class="card-body">
-      <form (submit)="createChannel($event)">
+      <form (submit)="createChannel(channelName)">
         <fieldset>
           <div class="form-group">
             <label>Channel Name</label>
@@ -19,9 +19,18 @@
 <div *ngFor="let channel of channels">
   <div class="container" style="padding: 20px;">
     <div class="card border-primary mb-3" style="max-width: 100em;">
-      <div class="card-header">{{channel.name}}</div>
+      <div class="card-header">{{channel.channel_name}}</div>
       <div class="card-body">
-        {{channel.users}}
+        <form>
+            <fieldset>
+                <p style="margin: 10px">{{channel.users}}</p>
+              <div class="form-group">
+                <input [(ngModel)]="channel_user_name" type="text" placeholder="Username" class="form-control" name="channel_new_user" style="margin: 10px">
+              </div>
+              <button (click)="deleteChannel(channel)" type="submit" class="btn btn-danger" style="margin: 10px">Delete Channel</button>
+              <button (click)="addUserToChannel(channel_user_name, channel)" type="submit" class="btn btn-primary">Add User</button>
+            </fieldset>
+          </form>
       </div>
     </div>
   </div>
