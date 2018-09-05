@@ -10,14 +10,13 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./manage-user.component.css']
 })
 export class ManageUserComponent implements OnInit {
-
   public users;
   public nameUser: string;
   public nameEmail: string;
-  constructor(private _userDetails: UsersService, private router:Router) { }
+  constructor(private _userService: UsersService, private router:Router) { }
 
   ngOnInit() {
-    // this.users = this._userDetails.knownusers;
+    // this.users = this._userService.knownusers;
     // if(!sessionStorage.getItem("username")){
     //   console.log("there is no username");
     //   this.router.navigateByUrl("home");
@@ -27,16 +26,15 @@ export class ManageUserComponent implements OnInit {
       console.log("No Username found.");
       this.router.navigateByUrl("home");
     } else {
-      console.log("0");
+      console.log("ngOnInit");
       this.getUsers();
-      console.log(this.users);
     }
   }
 
   getUsers() {
-    console.log("1");
-    this._userDetails.getUsersJSON().subscribe(
-      data => { this.users = data},
+    console.log("getUsers");
+    this._userService.getUsers().subscribe(
+      data => { this.users = data },
       err => console.error(err),
       () => console.log('Found Users')
     );
@@ -49,7 +47,7 @@ export class ManageUserComponent implements OnInit {
   */
   createUser(event) {
     // event.preventDefault();
-    // this._userDetails.knownusers.push({
+    // this._userService.knownusers.push({
     //   name: this.nameUser,
     //   email: this.nameEmail,
     //   channels: ["Pow"] //This is just a placeholder

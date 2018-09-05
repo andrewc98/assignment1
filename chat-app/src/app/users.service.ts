@@ -12,10 +12,19 @@ const httpOptions = {
 
 export class UsersService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {}
 
-  getUsersJSON() {
-    console.log("2");
+  getUsers() {
+    console.log("getUsersJSON");
     return this.http.get('http://localhost:3000/api/users');
+  }
+
+  createUser(user) {
+    let body = JSON.stringify(user);
+    return this.http.post('http://localhost:3000/api/student/', body, httpOptions);
+  }
+
+  deleteUser(user) {
+    return this.http.delete('http://localhost:3000/api/student/' + user.user_name);
   }
 }

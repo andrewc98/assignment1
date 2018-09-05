@@ -23,9 +23,19 @@
 <div *ngFor="let user of users">
   <div class="container" style="padding: 20px;">
     <div class="card border-primary mb-3" style="max-width: 100em;">
-      <div class="card-header">{{user.name}} - {{user.email}}</div>
+      <div class="card-header">Access Level - {{user.access_level}}</div>
       <div class="card-body">
-        {{user.channels}}
+        <form (submit)="deleteUser(user)">
+            <fieldset>
+              <div class="form-group">
+                <input [(ngModel)]="user_name_del" type="text" placeholder="{{user.user_name}}" id="user_name_del" class="form-control" name="user_name_del" disabled>
+              </div>
+              <div class="form-group">
+                <input [(ngModel)]="user_name_email" type="text" placeholder="{{user.email}}" id="user_name_email" class="form-control" name="user_name_email" disabled>
+              </div>
+              <button type="submit" class="btn btn-primary">Delete User</button>
+            </fieldset>
+          </form>
       </div>
     </div>
   </div>

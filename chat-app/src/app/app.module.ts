@@ -9,6 +9,8 @@ import { ChatComponent } from './chat/chat.component';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { ManageChannelsComponent } from './manage-channels/manage-channels.component';
 import { ManageGroupsComponent } from './manage-groups/manage-groups.component';
+import { UsersService } from './users.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { ManageGroupsComponent } from './manage-groups/manage-groups.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
