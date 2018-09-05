@@ -56,6 +56,20 @@ app.get('/api/groups', (req, res) => {
         }
     });
 });
+app.post('/api/groups', function (req, res) {
+    let group_name = req.body.group_name;
+    let existing_group = groups.find(x => x.group_name == group_name);
+
+    if (existing_group == undefined) {
+        let new_group = {"group_name": group_name, "users": []};
+        groups.push(new_group);
+        groupsJSON = JSON.stringify(groups);
+        fs.writeFile('./data/groups.json', groupsJSON,'utf-8',function(err){
+            if (err) throw err;
+            res.send(groups);
+        });
+    }
+});
 app.put('/api/groups/:id', function (req, res) {
     console.log('Add Channel to Group');
     let channel_name = req.body[0];

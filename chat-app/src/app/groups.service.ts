@@ -14,7 +14,7 @@ export class GroupsService {
 
   constructor(private http:HttpClient) { }
 
-  getChannels() {
+  getGroups() {
     return this.http.get('http://localhost:3000/api/groups');
   }
 
@@ -22,5 +22,10 @@ export class GroupsService {
     console.log("addChannelToGroupJSON");
     let body = [channel_name, group]
     return this.http.put('http://localhost:3000/api/groups/' + group.group_name, body, httpOptions);
+  }
+
+  createGroups(group) {
+    console.log("createGroupJSON");
+    return this.http.post('http://localhost:3000/api/groups/', group, httpOptions);
   }
 }

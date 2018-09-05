@@ -2,7 +2,7 @@
   <div class="card border-primary mb-3" style="max-width: 100rem;">
     <div class="card-header">Create Channel Form</div>
     <div class="card-body">
-      <form (submit)="createChannel(channelName)">
+      <form (submit)="createGroup(group_name)">
         <fieldset>
           <div class="form-group">
             <label>Group Name</label>
@@ -24,7 +24,7 @@
           <p>{{group.channels}}</p>
           <fieldset>
             <div class="form-group">
-              <input [(ngModel)]="group_channel_name" type="text" placeholder="Group Name" class="form-control" name="group_channel_name" style="margin: 10px">
+              <input [(ngModel)]="group_channel_name" type="text" placeholder="Channel Name" class="form-control" name="group_channel_name" style="margin: 10px">
             </div>
             <button (click)="deleteGroup(channel)" type="submit" class="btn btn-danger" style="margin: 10px">Delete Group</button>
             <button (click)="addChannelToGroup(group_channel_name, group)" type="submit" class="btn btn-primary">Add Channel</button>

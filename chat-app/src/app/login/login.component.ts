@@ -10,23 +10,39 @@ import { UsersService } from '../users.service';
 })
 export class LoginComponent implements OnInit {
   public username: string;
-  public knownusers = ["Super", "Group"];
-  constructor(private router:Router, private form:FormsModule, private userService: UsersService) { }
+  public users;
+  constructor(private router:Router, private form:FormsModule, private _userService: UsersService) { }
 
   ngOnInit() {
+    if(sessionStorage.getItem("username")){
+      this.router.navigateByUrl("dashboard");
+    } else {
+      this.getUsers();
+    }
+  }
+
+  getUsers() {
+    console.log("getUsers");
+    this._userService.getUsers().subscribe(
+      data => { this.users = data },
+      err => console.error(err),
+      () => console.log('Found Users')
+    );
   }
 
   /*
     Author ------- Andrew Campbell
     Date --------- 31/08/2018
-    Description -- This function will login the user, and redirect them to chat, only if they are a registered user.
+    Description -- This function will login the user, and redirect them to the dashboard, only if they are a registered user.
   */
   loginUser(event){
-    event.preventDefault();
     if (typeof(Storage) !== "undefined") {
-      if (this.knownusers.indexOf(this.username) != -1 || this.username == "") {
-        sessionStorage.setItem("username", this.username);
-        this.router.navigate(['/chat']);
+      for (let name of this.users) {
+        if (name.user_name == this.username) {
+          sessionStorage.setItem("username", this.username);
+          sessionStorage.setItem("access_level", name.access_level);
+          this.router.navigate(['/dashboard']);
+        }
       }
     }
   }
