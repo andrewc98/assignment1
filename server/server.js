@@ -62,7 +62,7 @@ app.post('/api/groups', function (req, res) {
     let existing_group = groups.find(x => x.group_name == group_name);
 
     if (existing_group == undefined) {
-        let new_group = {"group_name": group_name, "users": []};
+        let new_group = {"group_name": group_name, "channels": []};
         groups.push(new_group);
         groupsJSON = JSON.stringify(groups);
         fs.writeFile('./data/groups.json', groupsJSON,'utf-8',function(err){
@@ -206,19 +206,3 @@ app.delete('/api/users/:user_name', function (req, res) {
     });
 });
 // --- App get for users End
-
-// --- App get for dashboard Start
-app.get('/api/dash', (req, res) => {
-    console.log("get.api/users");
-    fs.readFile('./data/users.json', 'utf8', function(err, data){
-        if (err) {
-            console.log(err);
-        } else {
-            if (data) {
-                usersJSON = JSON.parse(data);
-                res.send(usersJSON);
-            }
-        }
-    });
-});
-// --- App get for dashboard End

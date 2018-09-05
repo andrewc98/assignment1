@@ -1,10 +1,34 @@
 [
     {
         "group_name": "Sporting",
-        "channels": ["Rugby League", "Tennis"]
+        "channels": [{
+            "name": "Rugby League",
+            "users": [
+                "super",
+                "group"
+            ]
+        },     
+        {
+            "name": "Tennis",
+            "users": [
+                "super"
+            ]
+        }]
     },
     {
         "group_name": "Cooking",
-        "channels": ["Italian", "French"]
+        "channels": [{
+            "name": "Italian",
+            "users": [
+                "naomi",
+                "justin"
+            ]
+        },
+        {
+            "channel_name": "French",
+            "users": [
+                "naomi"
+            ]
+        }]
     }
 ]

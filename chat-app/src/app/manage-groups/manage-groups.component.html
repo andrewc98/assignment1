@@ -5,10 +5,10 @@
       <form (submit)="createGroup(group_name)">
         <fieldset>
           <div class="form-group">
-            <label>Group Name</label>
-            <input [(ngModel)]="group_name" type="text" placeholder="Group Name" id="group_name" class="form-control" name="group_name">
+            <label style="margin: 10px">Group Name</label>
+            <input [(ngModel)]="group_name" type="text" placeholder="Group Name" id="group_name" class="form-control" name="group_name" style="margin: 10px">
           </div>
-          <button type="submit" class="btn btn-primary">Create Group</button>
+          <button type="submit" class="btn btn-primary" style="margin: 10px">Create Group</button>
         </fieldset>
       </form>
     </div>
@@ -21,7 +21,7 @@
       <div class="card-header">{{group.group_name}}</div>
       <div class="card-body">
         <form>
-          <p>{{group.channels}}</p>
+          <p *ngFor="let channel of group.channels" style="margin: 10px">{{channel.name}} </p>
           <fieldset>
             <div class="form-group">
               <input [(ngModel)]="group_channel_name" type="text" placeholder="Channel Name" class="form-control" name="group_channel_name" style="margin: 10px">

@@ -1,1 +1,34 @@
-[{"group_name":"Sporting","channels":["Rugby League","Tennis","French","Italian"]},{"group_name":"Cooking","channels":["Italian","French","Rugby League"]},{"group_name":"Language","users":[]}]
+[
+    {
+        "group_name": "Sporting",
+        "channels": [{
+            "name": "Rugby League",
+            "users": [
+                "super",
+                "group"
+            ]
+        },     
+        {
+            "name": "Tennis",
+            "users": [
+                "super"
+            ]
+        }]
+    },
+    {
+        "group_name": "Cooking",
+        "channels": [{
+            "name": "Italian",
+            "users": [
+                "naomi",
+                "justin"
+            ]
+        },
+        {
+            "channel_name": "French",
+            "users": [
+                "naomi"
+            ]
+        }]
+    }
+]
