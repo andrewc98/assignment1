@@ -17,28 +17,72 @@ app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended:false}));
 
 
+// --- Allow connection to the angular app Start
 app.use(express.static(path.join(__dirname, '../chat-app/dist/chat-app/')));
 app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname,'../chat-app/dist/chat-app/index.html'))
+});
+app.get('/manage_groups', function(req,res){
+    res.sendFile(path.join(__dirname,'../chat-app/dist/chat-app/index.html'))
+});
+app.get('/manage_channels', function(req,res){
     res.sendFile(path.join(__dirname,'../chat-app/dist/chat-app/index.html'))
 });
 app.get('/manage_users', function(req,res){
     res.sendFile(path.join(__dirname,'../chat-app/dist/chat-app/index.html'))
 });
+// --- Allow connection to the angular app End
 
+var groups = [];
+var channels = [];
+var usersJSON = [];
 
+// --- App get for groups Start
+app.get('/api/groups', (req, res) => {
+    fs.readFile('./data/groups.json', 'utf8', function(err, data){
+        if (err) {
+            console.log(err);
+        } else {
+            var groupsJSON = JSON.parse(data);
+            res.send(groupsJSON);
+        }
+    });
+});
+// --- App get for groups End
 
+// --- App get for channels Start
+app.get('/api/channels', (req, res) => {
+    fs.readFile('./data/channels.json', 'utf8', function(err, data){
+        if (err) {
+            console.log(err);
+        } else {
+            var channelsJSON = JSON.parse(data);
+            res.send(channelsJSON);
+        }
+    });
+});
+// --- App get for channels End
+
+// --- App get for users Start
 app.get('/api/users', (req, res) => {
-    console.log("Hello");
     fs.readFile('./data/users.json', 'utf8', function(err, data){
         if (err) {
             console.log(err);
         } else {
-            var usersJSON = JSON.parse(data);
-            console.log(usersJSON);
+            usersJSON = JSON.parse(data);
             res.send(usersJSON);
         }
     });
 });
+app.delete('/api/users/:user_name', function (req, res) {
+    console.log('delete users');
+    let user_name = req.params.user_name;
+    let del = users.find(x => x.user_name == user_name);
+    users = users.filter(x => x.user_name != user_name);
+    console.log(del);
+    res.send(del);
+});
+// --- App get for users End
 
 require('./routes.js')(app, path);
 require('./socket.js')(app, io);

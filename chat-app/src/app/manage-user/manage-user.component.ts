@@ -40,6 +40,19 @@ export class ManageUserComponent implements OnInit {
     );
   }
 
+  deleteUser(user){
+    this._userService.deleteUser(user).subscribe(
+      data => {
+        this.getUsers();
+        return true;
+      },
+      error => {
+        console.error(error);
+        console.error('Unexpected error encountered deleting user.');
+      }
+    )
+  }
+
   /*
     Author ------- Andrew Campbell
     Date --------- 02/09/2018

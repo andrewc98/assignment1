@@ -25,7 +25,7 @@
     <div class="card border-primary mb-3" style="max-width: 100em;">
       <div class="card-header">Access Level - {{user.access_level}}</div>
       <div class="card-body">
-        <form (submit)="deleteUser(user)">
+        <form>
             <fieldset>
               <div class="form-group">
                 <input [(ngModel)]="user_name_del" type="text" placeholder="{{user.user_name}}" id="user_name_del" class="form-control" name="user_name_del" disabled>
@@ -33,7 +33,7 @@
               <div class="form-group">
                 <input [(ngModel)]="user_name_email" type="text" placeholder="{{user.email}}" id="user_name_email" class="form-control" name="user_name_email" disabled>
               </div>
-              <button type="submit" class="btn btn-primary">Delete User</button>
+              <button (click)="deleteUser(user)" type="submit" class="btn btn-primary">Delete User</button>
             </fieldset>
           </form>
       </div>

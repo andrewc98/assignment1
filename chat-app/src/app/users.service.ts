@@ -21,10 +21,10 @@ export class UsersService {
 
   createUser(user) {
     let body = JSON.stringify(user);
-    return this.http.post('http://localhost:3000/api/student/', body, httpOptions);
+    return this.http.post('http://localhost:3000/api/users/', body, httpOptions);
   }
 
   deleteUser(user) {
-    return this.http.delete('http://localhost:3000/api/student/' + user.user_name);
+    return this.http.delete('http://localhost:3000/api/users/' + user.user_name);
   }
 }
