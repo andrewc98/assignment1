@@ -17,6 +17,9 @@ export class ManageGroupsComponent implements OnInit {
     if(!sessionStorage.getItem("username")){
       console.log("No Username found.");
       this.router.navigateByUrl("home");
+    } else if(sessionStorage.getItem("access_level") != "3"){
+      console.log(sessionStorage.getItem("access_level"));
+      this.router.navigateByUrl("home");
     } else {
       console.log("ngOnInit");
       this.getGroups();

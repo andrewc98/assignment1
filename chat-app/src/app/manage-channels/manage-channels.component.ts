@@ -18,6 +18,9 @@ export class ManageChannelsComponent implements OnInit {
     if(!sessionStorage.getItem("username")){
       console.log("No Username found.");
       this.router.navigateByUrl("home");
+    } else if(sessionStorage.getItem("access_level") == "1"){
+      console.log(sessionStorage.getItem("access_level"));
+      this.router.navigateByUrl("home");
     } else {
       console.log("ngOnInit");
       this.getChannels();
