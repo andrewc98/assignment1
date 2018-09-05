@@ -37,6 +37,14 @@ var groupsJSON = [];
 var channelsJSON = [];
 var usersJSON = [];
 
+require('./routes.js')(app, path);
+require('./socket.js')(app, io);
+require('./listen.js')(http);
+
+var groups = require('./data/groups.json');
+var channels = require('./data/channels.json');
+var users = require('./data/users.json');
+
 // --- App get for groups Start
 app.get('/api/groups', (req, res) => {
     fs.readFile('./data/groups.json', 'utf8', function(err, data){
@@ -47,6 +55,33 @@ app.get('/api/groups', (req, res) => {
             res.send(groupsJSON);
         }
     });
+});
+app.put('/api/groups/:id', function (req, res) {
+    console.log('Add Channel to Group');
+    let channel_name = req.body[0];
+    console.log(channel_name);
+    let group_name = req.body[1].group_name;
+    console.log(group_name);
+
+    let channel_to_add = channels.find(x => x.channel_name == channel_name);
+    console.log(channel_to_add);
+
+    if (channel_to_add) {
+        let group_to_add = groups.find(x => x.group_name == group_name);
+        if (group_to_add.channels.indexOf(channel_name) == -1) {
+
+            groups = groups.filter(x => x.group_name != group_name);
+            group_to_add.channels.push(channel_name);
+
+            groups.push(group_to_add);
+            let new_groups = JSON.stringify(groups);
+            fs.writeFile('./data/groups.json', new_groups,'utf-8',function(err){
+                if (err) throw err;
+                console.log(new_groups);
+                res.send(new_groups);
+            });
+        }
+    }
 });
 // --- App get for groups End
 
@@ -154,11 +189,3 @@ app.delete('/api/users/:user_name', function (req, res) {
     });
 });
 // --- App get for users End
-
-require('./routes.js')(app, path);
-require('./socket.js')(app, io);
-require('./listen.js')(http);
-
-var groups = require('./data/groups.json');
-var channels = require('./data/channels.json');
-var users = require('./data/users.json');

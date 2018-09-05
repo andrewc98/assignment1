@@ -1,3 +1,36 @@
-<p>
-  manage-groups works!
-</p>
+<div class="container" style="padding: 20px;">
+  <div class="card border-primary mb-3" style="max-width: 100rem;">
+    <div class="card-header">Create Channel Form</div>
+    <div class="card-body">
+      <form (submit)="createChannel(channelName)">
+        <fieldset>
+          <div class="form-group">
+            <label>Group Name</label>
+            <input [(ngModel)]="group_name" type="text" placeholder="Group Name" id="group_name" class="form-control" name="group_name">
+          </div>
+          <button type="submit" class="btn btn-primary">Create Group</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngFor="let group of groups">
+  <div class="container" style="padding: 20px;">
+    <div class="card border-primary mb-3" style="max-width: 100em;">
+      <div class="card-header">{{group.group_name}}</div>
+      <div class="card-body">
+        <form>
+          <p>{{group.channels}}</p>
+          <fieldset>
+            <div class="form-group">
+              <input [(ngModel)]="group_channel_name" type="text" placeholder="Group Name" class="form-control" name="group_channel_name" style="margin: 10px">
+            </div>
+            <button (click)="deleteGroup(channel)" type="submit" class="btn btn-danger" style="margin: 10px">Delete Group</button>
+            <button (click)="addChannelToGroup(group_channel_name, group)" type="submit" class="btn btn-primary">Add Channel</button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

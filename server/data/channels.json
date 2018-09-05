@@ -1,1 +1,28 @@
-[{"channel_name":"Gaming","users":["naomi","super"]}]
+[
+    {
+        "channel_name": "Rugby League",
+        "users": [
+            "super",
+            "group"
+        ]
+    },
+    {
+        "channel_name": "Tennis",
+        "users": [
+            "super"
+        ]
+    },
+    {
+        "channel_name": "Italian",
+        "users": [
+            "naomi",
+            "justin"
+        ]
+    },
+    {
+        "channel_name": "French",
+        "users": [
+            "naomi"
+        ]
+    }
+]

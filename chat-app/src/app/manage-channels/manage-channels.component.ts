@@ -29,7 +29,7 @@ export class ManageChannelsComponent implements OnInit {
     this._channelService.getChannels().subscribe(
       data => { this.channels = data },
       err => console.error(err),
-      () => console.log('Found Users')
+      () => console.log('Found Groups')
     );
   }
 
@@ -38,7 +38,7 @@ export class ManageChannelsComponent implements OnInit {
     this._channelService.addUserToChannel(channel, user).subscribe(
       data => { this.channels = data },
       err => console.error(err),
-      () => console.log('Found Channels')
+      () => console.log('Added User To Channel')
     )
   }
 

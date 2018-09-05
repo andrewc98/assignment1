@@ -11,6 +11,7 @@ import { ManageChannelsComponent } from './manage-channels/manage-channels.compo
 import { ManageGroupsComponent } from './manage-groups/manage-groups.component';
 import { UsersService } from './users.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     ChatComponent,
     ManageUserComponent,
     ManageChannelsComponent,
-    ManageGroupsComponent
+    ManageGroupsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
