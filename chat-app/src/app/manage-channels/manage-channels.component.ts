@@ -31,7 +31,6 @@ export class ManageChannelsComponent implements OnInit {
       err => console.error(err),
       () => console.log('Found Users')
     );
-    this.channels.reverse()
   }
 
   addUserToChannel(channel, user) {
@@ -40,7 +39,7 @@ export class ManageChannelsComponent implements OnInit {
       data => { this.channels = data },
       err => console.error(err),
       () => console.log('Found Channels')
-    );
+    )
   }
 
   deleteChannel(channel){
@@ -61,17 +60,20 @@ export class ManageChannelsComponent implements OnInit {
     Date --------- 31/08/2018
     Description -- This function will login the user, and redirect them to chat, only if they are a registered user.
   */
- createChannel(channel_name){
-  event.preventDefault();
-  this._channelService.createChannel(channel_name).subscribe(
-    data => {
-      this.getChannels();
-      return true;
-    },
-    error => {
-      console.error(error);
-      console.error('Unexpected error encountered creating channel.');
+  createChannel(channel_name){
+    let body = {
+      channel_name: channel_name,
+      users: []
     }
-  )
+    this._channelService.createChannel(body).subscribe(
+      data => {
+        this.getChannels();
+        return true;
+      },
+      error => {
+        console.error(error);
+        console.error('Unexpected error encountered creating channel.');
+      }
+    )
   }
 }

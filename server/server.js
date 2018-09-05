@@ -61,22 +61,18 @@ app.get('/api/channels', (req, res) => {
         }
     });
 });
-app.post('/api/channels/', function (req, res) {
-    console.log('New Channel');
-    let channel_name = req.params.channel_name;
-    let new_channel = {"channel_name": channel_name, "users": []};
-    console.log(new_channel);
+app.post('/api/channels', function (req, res) {
+    let channel_name = req.body.channel_name;
+    let existing_channel = channels.find(x => x.channel_name == channel_name);
 
-    let channel_to_add = channels.find(x => x.channel_name == channel_name);
-    if (channel_to_add) {
-        if (channel_to_add.users.indexOf(user_to_add.user_name) == -1) {
-            channels.push(new_channel);
-            channelsJSON = JSON.stringify(channels);
-            fs.writeFile('./data/channels.json', channels,'utf-8',function(err){
-                if (err) throw err;
-                res.send(channels);
-            });;
-        }
+    if (existing_channel == undefined) {
+        let new_channel = {"channel_name": channel_name, "users": []};
+        channels.push(new_channel);
+        channelsJSON = JSON.stringify(channels);
+        fs.writeFile('./data/channels.json', channelsJSON,'utf-8',function(err){
+            if (err) throw err;
+            res.send(channels);
+        });
     }
 });
 app.put('/api/channels/:id', function (req, res) {
@@ -144,7 +140,6 @@ app.post('/api/users', function (req, res) {
             res.send(users);
         });
     }
-
 });
 app.delete('/api/users/:user_name', function (req, res) {
     console.log('delete users');

@@ -19,8 +19,8 @@ export class ChannelsService {
     return this.http.get('http://localhost:3000/api/channels');
   }
 
-  createChannel(channel_name) {
-    return this.http.post('http://localhost:3000/api/channels/', channel_name, httpOptions);
+  createChannel(channel) {
+    return this.http.post('http://localhost:3000/api/channels/', channel, httpOptions);
   }
 
   addUserToChannel(channel, user){
