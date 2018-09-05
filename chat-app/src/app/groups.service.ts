@@ -15,6 +15,7 @@ export class GroupsService {
   constructor(private http:HttpClient) { }
 
   getGroups() {
+    console.log("getGroupsJSON");
     return this.http.get('http://localhost:3000/api/groups');
   }
 

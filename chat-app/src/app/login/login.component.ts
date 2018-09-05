@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
       err => console.error(err),
       () => console.log('Found Users')
     );
+    sessionStorage.setItem("users", this.users)
   }
 
   /*

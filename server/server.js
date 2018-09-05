@@ -47,6 +47,7 @@ var users = require('./data/users.json');
 
 // --- App get for groups Start
 app.get('/api/groups', (req, res) => {
+    console.log("get.api/groups");
     fs.readFile('./data/groups.json', 'utf8', function(err, data){
         if (err) {
             console.log(err);
@@ -101,6 +102,7 @@ app.put('/api/groups/:id', function (req, res) {
 
 // --- App get for channels Start
 app.get('/api/channels', (req, res) => {
+    console.log("get.api/channels");
     fs.readFile('./data/channels.json', 'utf8', function(err, data){
         if (err) {
             console.log(err);
@@ -162,6 +164,7 @@ app.delete('/api/channels/:channel_name', function (req, res) {
 
 // --- App get for users Start
 app.get('/api/users', (req, res) => {
+    console.log("get.api/users");
     fs.readFile('./data/users.json', 'utf8', function(err, data){
         if (err) {
             console.log(err);
@@ -203,3 +206,19 @@ app.delete('/api/users/:user_name', function (req, res) {
     });
 });
 // --- App get for users End
+
+// --- App get for dashboard Start
+app.get('/api/dash', (req, res) => {
+    console.log("get.api/users");
+    fs.readFile('./data/users.json', 'utf8', function(err, data){
+        if (err) {
+            console.log(err);
+        } else {
+            if (data) {
+                usersJSON = JSON.parse(data);
+                res.send(usersJSON);
+            }
+        }
+    });
+});
+// --- App get for dashboard End
