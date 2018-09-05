@@ -61,7 +61,7 @@ app.get('/api/channels', (req, res) => {
         }
     });
 });
-app.post('/api/channel/', function (req, res) {
+app.post('/api/channels/', function (req, res) {
     console.log('New Channel');
     let channel_name = req.params.channel_name;
     let new_channel = {"channel_name": channel_name, "users": []};
@@ -71,15 +71,15 @@ app.post('/api/channel/', function (req, res) {
     if (channel_to_add) {
         if (channel_to_add.users.indexOf(user_to_add.user_name) == -1) {
             channels.push(new_channel);
+            channelsJSON = JSON.stringify(channels);
             fs.writeFile('./data/channels.json', channels,'utf-8',function(err){
                 if (err) throw err;
-                channelsJSON = JSON.parse(channels);
-                res.send(channelsJSON);
+                res.send(channels);
             });;
         }
     }
 });
-app.put('/api/channel/:id', function (req, res) {
+app.put('/api/channels/:id', function (req, res) {
     console.log('Add User to Channel');
     let user_name = req.body[0];
     let channel_name = req.body[1].channel_name;
@@ -101,7 +101,7 @@ app.put('/api/channel/:id', function (req, res) {
         }
     }
 });
-app.delete('/api/channel/:channel_name', function (req, res) {
+app.delete('/api/channels/:channel_name', function (req, res) {
     console.log('Delete Channel');
     let channel_name = req.params.channel_name;
     let del = channels.find(x => x.channel_name == channel_name);
@@ -127,6 +127,24 @@ app.get('/api/users', (req, res) => {
             }
         }
     });
+});
+app.post('/api/users', function (req, res) {
+    console.log('New User');
+    let user_name = req.body.name;
+    let user_email = req.body.email;
+    let existing_user = users.find(x => x.user_name == user_name);
+
+    if (existing_user == undefined) {
+        let new_user = {"user_name": user_name, "email": user_email, "access_level": 1};
+        users.push(new_user);
+        console.log(users);
+        usersJSON = JSON.stringify(users);
+        fs.writeFile('./data/users.json',usersJSON,'utf-8',function(err){
+            if (err) throw err;
+            res.send(users);
+        });
+    }
+
 });
 app.delete('/api/users/:user_name', function (req, res) {
     console.log('delete users');

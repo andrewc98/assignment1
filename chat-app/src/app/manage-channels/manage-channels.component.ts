@@ -31,6 +31,7 @@ export class ManageChannelsComponent implements OnInit {
       err => console.error(err),
       () => console.log('Found Users')
     );
+    this.channels.reverse()
   }
 
   addUserToChannel(channel, user) {

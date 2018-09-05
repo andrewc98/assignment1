@@ -20,16 +20,15 @@ export class ChannelsService {
   }
 
   createChannel(channel_name) {
-    console.log("Well, I got here at least.");
-    return this.http.post('http://localhost:3000/api/channel/', channel_name, httpOptions);
+    return this.http.post('http://localhost:3000/api/channels/', channel_name, httpOptions);
   }
 
   addUserToChannel(channel, user){
     let body = [channel, user]
-    return this.http.put('http://localhost:3000/api/channel/' + channel.name, body, httpOptions);
+    return this.http.put('http://localhost:3000/api/channels/' + channel.name, body, httpOptions);
   }
 
   deleteChannel(channel) {
-    return this.http.delete('http://localhost:3000/api/channel/' + channel.channel_name);
+    return this.http.delete('http://localhost:3000/api/channels/' + channel.channel_name);
   }
 }
