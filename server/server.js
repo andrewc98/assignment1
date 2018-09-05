@@ -69,8 +69,10 @@ app.get('/api/users', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            usersJSON = JSON.parse(data);
-            res.send(usersJSON);
+            if (data) {
+                usersJSON = JSON.parse(data);
+                res.send(usersJSON);
+            }
         }
     });
 });
@@ -79,8 +81,12 @@ app.delete('/api/users/:user_name', function (req, res) {
     let user_name = req.params.user_name;
     let del = users.find(x => x.user_name == user_name);
     users = users.filter(x => x.user_name != user_name);
-    console.log(del);
-    res.send(del);
+    let new_users = JSON.stringify(users);
+    fs.writeFile('./data/users.json',new_users,'utf-8',function(err){
+        if (err) throw err;
+        console.log(del);
+        res.send(del);
+    });
 });
 // --- App get for users End
 
