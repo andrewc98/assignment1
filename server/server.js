@@ -53,27 +53,23 @@ app.get('/api/dash', (req, res) => {
             console.log(err);
         } else {
             groupsJSON = JSON.parse(data);
-            if (req.query.access_level != 1) {
-                res.send(groupsJSON);                
-            } else {
-                var groups_to_return = [];
-                groupsJSON.forEach(group => {
-                    var channels_user_in = [];
-                    group.channels.forEach(channel => {
-                        if (channel.users.indexOf(req.query.name) != -1) {
-                            channels_user_in.push(channel);
-                        }
-                    });
-                    if (channels_user_in.length > 0 || group.users.indexOf(req.query.name) != -1) {
-                        console.log(channels_user_in);
-                        groups_to_return.push({
-                            group_name: group.group_name,
-                            channels: channels_user_in
-                        });
+            var groups_to_return = [];
+            groupsJSON.forEach(group => {
+                var channels_user_in = [];
+                group.channels.forEach(channel => {
+                    if (channel.users.indexOf(req.query.name) != -1) {
+                        channels_user_in.push(channel);
                     }
                 });
-                res.send(groups_to_return);
-            }
+                if (channels_user_in.length > 0 || group.users.indexOf(req.query.name) != -1) {
+                    console.log(channels_user_in);
+                    groups_to_return.push({
+                        group_name: group.group_name,
+                        channels: channels_user_in
+                    });
+                }
+            });
+            res.send(groups_to_return);
         }
     });
 });
@@ -209,6 +205,39 @@ app.get('/api/users', (req, res) => {
         }
     });
 });
+
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 06/09/2018
+    Description --- This function will promote or demote a user, depending on the input recieved.
+*/
+app.put('/api/users/:user_name', function (req, res) {
+    console.log('Change Access Level');
+    let user_name = req.body[0].user_name;
+    let access_level = req.body[1];
+
+    let user_to_add = users.find(x => x.user_name == user_name);
+
+    if (user_to_add) {
+        if (access_level == '+') {
+            if (user_to_add.access_level == '1') { user_to_add.access_level = '2' }
+            else if (user_to_add.access_level = '1') { user_to_add.access_level = '3' }
+        } else if (access_level == '-') {
+            if (user_to_add.access_level == '3') { user_to_add.access_level = '2' }
+            else if (user_to_add.access_level = '2') { user_to_add.access_level = '1' }
+        }
+
+        console.log(user_to_add);
+
+        users = users.filter(x => x.user_name != user_name);
+        users.push(user_to_add);
+        let new_users = JSON.stringify(users);
+        fs.writeFile('./data/users.json', new_users,'utf-8',function(err){
+            if (err) throw err;
+            res.send(new_users);
+        });
+    }
+});
 app.post('/api/users', function (req, res) {
     console.log('New User');
     let user_name = req.body.name;
@@ -226,11 +255,43 @@ app.post('/api/users', function (req, res) {
         });
     }
 });
+
+/*
+  Author ------- Andrew Campbell
+  Date --------- 02/09/2018
+  Description -- This function will delete a new user based on the input of the form.
+*/
 app.delete('/api/users/:user_name', function (req, res) {
     console.log('delete users');
     let user_name = req.params.user_name;
     let del = users.find(x => x.user_name == user_name);
     users = users.filter(x => x.user_name != user_name);
+
+    groups.forEach(group => {
+        let remove_index = group.users.indexOf(user_name);
+        if (remove_index != -1) {
+            group.users.splice(remove_index, 1);
+        }
+        group.channels.forEach(channel => {
+            let remove_index = channel.users.indexOf(user_name);
+            if (remove_index != -1) {
+                channel.users.splice(remove_index, 1);
+            }
+        });
+    });
+    channels.forEach(channel => {
+        let remove_index = channel.users.indexOf(user_name);
+        if (remove_index != -1) {
+            channel.users.splice(remove_index, 1);
+        }
+    });
+
+    let new_groups = JSON.stringify(groups);
+    fs.writeFile('./data/groups.json',new_groups,'utf-8',function(err){});
+
+    let new_channels = JSON.stringify(channels);
+    fs.writeFile('./data/channels.json',new_channels,'utf-8',function(err){});
+
     let new_users = JSON.stringify(users);
     fs.writeFile('./data/users.json',new_users,'utf-8',function(err){
         if (err) throw err;

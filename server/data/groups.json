@@ -7,7 +7,7 @@
                 "super",
                 "group"
             ]
-        },
+        },     
         {
             "name": "Tennis",
             "users": [
@@ -30,7 +30,7 @@
             ]
         },
         {
-            "name": "French",
+            "channel_name": "French",
             "users": [
                 "naomi"
             ]

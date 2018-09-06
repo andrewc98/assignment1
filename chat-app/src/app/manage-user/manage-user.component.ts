@@ -43,6 +43,11 @@ export class ManageUserComponent implements OnInit {
     );
   }
 
+  /*
+    Author ------- Andrew Campbell
+    Date --------- 02/09/2018
+    Description -- This function will delete a user from the JSON files.
+  */
   deleteUser(user){
     this._userService.deleteUser(user).subscribe(
       data => {
@@ -75,5 +80,20 @@ export class ManageUserComponent implements OnInit {
         console.error(error);
       }
     )
+  }
+
+  changeLevel(user, access_level) {
+    if ((user.access_level != '3' && access_level == '+') || (user.access_level != '1' && access_level == '-')) {
+      console.log("changeLevel");
+      this._userService.changeLevel(user, access_level).subscribe(
+        data => { 
+          this.getUsers();
+          return true;
+        },
+        error => {
+          console.error(error);
+        }
+      )
+    }
   }
 }

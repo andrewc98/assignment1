@@ -13,7 +13,12 @@
             "users": [
                 "super"
             ]
-        }]
+        }],
+        "users": [
+            "super",
+            "group",
+            "naomi"
+        ]
     },
     {
         "group_name": "Cooking",
@@ -29,6 +34,11 @@
             "users": [
                 "naomi"
             ]
-        }]
+        }],
+        "users": [
+            "naomi",
+            "justin",
+            "super"
+        ]
     }
 ]
