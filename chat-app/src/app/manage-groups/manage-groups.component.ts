@@ -36,11 +36,11 @@ export class ManageGroupsComponent implements OnInit {
   }
 
   addToGroup(channel_name, group, type) {
-    console.log("addChannelToGroup");
+    console.log("addToGroup");
     this._groupService.addToGroup(channel_name, group, type).subscribe(
       data => { this.groups = data },
       err => console.error(err),
-      () => console.log('Added User To Channel')
+      () => console.log('Added To Group')
     )
   }
 

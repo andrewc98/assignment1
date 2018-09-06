@@ -20,7 +20,7 @@ export class GroupsService {
   }
 
   addToGroup(channel_name, group, type) {
-    console.log("addChannelToGroupJSON");
+    console.log("addToGroupJSON");
     let body = [channel_name, group, type]
     return this.http.put('http://localhost:3000/api/groups/' + group.group_name, body, httpOptions);
   }
