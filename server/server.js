@@ -56,11 +56,11 @@ app.get('/api/dash', (req, res) => {
             groupsJSON.forEach(group => {
                 var channels_user_in = [];
                 group.channels.forEach(channel => {
-                    if (channel.users.indexOf(req.query.name) != -1) {
+                    if (channel.users && channel.users.indexOf(req.query.name) != -1) {
                         channels_user_in.push(channel);
                     }
                 });
-                if (channels_user_in.length > 0 || group.users.indexOf(req.query.name) != -1) {
+                if (group.users && (channels_user_in.length > 0 || group.users.indexOf(req.query.name)) != -1) {
                     groups_to_return.push({
                         group_name: group.group_name,
                         channels: channels_user_in
