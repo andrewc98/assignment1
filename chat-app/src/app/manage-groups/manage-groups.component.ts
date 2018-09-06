@@ -13,6 +13,11 @@ export class ManageGroupsComponent implements OnInit {
 
   constructor(private router:Router, private _groupService: GroupsService) { }
 
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function will check if the user is of high enough rank to be on this page, or even if they are logged in.
+  */
   ngOnInit() {
     if(!sessionStorage.getItem("username")){
       console.log("No Username found.");
@@ -26,8 +31,14 @@ export class ManageGroupsComponent implements OnInit {
     }
   }
 
+
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function will call the groupService for the groups.json.
+  */
   getGroups(){
-    console.log("getChannels");
+    console.log("getGroups");
     this._groupService.getGroups().subscribe(
       data => { this.groups = data },
       err => console.error(err),
@@ -35,6 +46,12 @@ export class ManageGroupsComponent implements OnInit {
     );
   }
 
+
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 06/09/2018
+    Description --- This function calls the groupService function to add a user or channel to the group.
+  */
   addToGroup(channel_name, group, type) {
     console.log("addToGroup");
     this._groupService.addToGroup(channel_name, group, type).subscribe(
@@ -46,7 +63,7 @@ export class ManageGroupsComponent implements OnInit {
 
   /*
     Author ------- Andrew Campbell
-    Date --------- 05/09/2018
+    Date --------- 06/09/2018
     Description -- This function is used to create a new group.
   */
   createGroup(group_name){
@@ -66,6 +83,12 @@ export class ManageGroupsComponent implements OnInit {
     )
   }
 
+
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 06/09/2018
+    Description --- This function deletes a group.
+  */
   deleteGroup(group){
     this._groupService.deleteGroup(group).subscribe(
       data => {

@@ -8,6 +8,11 @@ import { ManageGroupsComponent } from './manage-groups/manage-groups.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 06/09/2018
+    Description --- This is the routes that my app uses, and the components they go to.
+  */
 const routes: Routes = [
   {path:'home', component:LoginComponent},    //Home route
   {path:'', component:LoginComponent},   //Does this work?

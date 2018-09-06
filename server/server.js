@@ -46,6 +46,11 @@ var channels = require('./data/channels.json');
 var users = require('./data/users.json');
 
 // --- App get for dashboard End
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 06/09/2018
+    Description --- This function collects all of the content to be displayed for a user. Anything else is not displayed on the dashboard.
+*/
 app.get('/api/dash', (req, res) => {
     fs.readFile('./data/groups.json', 'utf8', function(err, data){
         if (err) {
@@ -74,6 +79,11 @@ app.get('/api/dash', (req, res) => {
 // --- App get for dashboard End
 
 // --- App get for groups Start
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function reads all of the groups from JSON and returns them.
+*/
 app.get('/api/groups', (req, res) => {
     fs.readFile('./data/groups.json', 'utf8', function(err, data){
         if (err) {
@@ -84,6 +94,11 @@ app.get('/api/groups', (req, res) => {
         }
     });
 });
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function creates a new channel, if it does not already exist.
+*/
 app.post('/api/groups', function (req, res) {
     let group_name = req.body.group_name;
     let existing_group = groups.find(x => x.group_name == group_name);
@@ -98,6 +113,13 @@ app.post('/api/groups', function (req, res) {
         });
     }
 });
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function adds a channel to a group.
+                --- Removes a channel from a group.
+                --- Adds a user to a group.
+*/
 app.put('/api/groups/:id', function (req, res) {
     console.log('.put/api/groups/');
     let channel_user_name = req.body[0];
@@ -151,6 +173,11 @@ app.put('/api/groups/:id', function (req, res) {
         res.send(new_groups);
     });
 });
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function will delete a group.
+*/
 app.delete('/api/groups/:group_name', function (req, res) {
     console.log('Delete Group');
     let group_name = req.params.group_name;
@@ -166,6 +193,11 @@ app.delete('/api/groups/:group_name', function (req, res) {
 // --- App get for groups End
 
 // --- App get for channels Start
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function collects all of the data from the channels.json file. Then returns it.
+*/
 app.get('/api/channels', (req, res) => {
     console.log("get.api/channels");
     fs.readFile('./data/channels.json', 'utf8', function(err, data){
@@ -177,6 +209,11 @@ app.get('/api/channels', (req, res) => {
         }
     });
 });
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function creates a new empty channel.
+*/
 app.post('/api/channels', function (req, res) {
     let channel_name = req.body.channel_name;
     let existing_channel = channels.find(x => x.channel_name == channel_name);
@@ -191,6 +228,11 @@ app.post('/api/channels', function (req, res) {
         });
     }
 });
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function is used to add and remove a user from a channel.
+*/
 app.put('/api/channels/:id', function (req, res) {
     console.log('Add User to Channel');
     let user_name = req.body[0];
@@ -244,6 +286,11 @@ app.put('/api/channels/:id', function (req, res) {
         });
     }
 });
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function is used to delete a channel, and all of it's connections it has to users/groups.
+*/
 app.delete('/api/channels/:channel_name', function (req, res) {
     console.log('Delete Channel');
     let channel_name = req.params.channel_name;
@@ -274,6 +321,11 @@ app.delete('/api/channels/:channel_name', function (req, res) {
 // --- App get for channels End
 
 // --- App get for users Start
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function will get all of the users from the user.json file.
+*/
 app.get('/api/users', (req, res) => {
     console.log("get.api/users");
     fs.readFile('./data/users.json', 'utf8', function(err, data){
@@ -320,6 +372,11 @@ app.put('/api/users/:user_name', function (req, res) {
         });
     }
 });
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function is used to create a new user.
+*/
 app.post('/api/users', function (req, res) {
     console.log('New User');
     let user_name = req.body.name;

@@ -11,11 +11,20 @@ export class SocketService {
   private socket;
   constructor() { }
 
+
+  /*
+    Author -------- Andrew Campbell
+    Description --- This function will send a message through the socket.
+  */
   sendMessage (message) {
     console.log('sendMessage(' + message + ')');
     this.socket.emit('add-message', message);
   }
 
+  /*
+    Author -------- Andrew Campbell
+    Description --- This will recieve messages from the socket.
+  */
   getMessage () {
         this.socket = io(this.url);
     

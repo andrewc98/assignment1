@@ -14,6 +14,11 @@ export class ManageChannelsComponent implements OnInit {
   public nameEmail: string;
   constructor(private router:Router, private _channelService: ChannelsService) { }
 
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 31/09/2018
+    Description --- This function is used to determine if the user should be here, and to call getChannels.
+  */
   ngOnInit() {
     if(!sessionStorage.getItem("username")){
       console.log("No Username found.");
@@ -27,6 +32,11 @@ export class ManageChannelsComponent implements OnInit {
     }
   }
 
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function calls the channelService service to access the channels.
+  */
   getChannels() {
     console.log("getChannels");
     this._channelService.getChannels().subscribe(
@@ -36,6 +46,11 @@ export class ManageChannelsComponent implements OnInit {
     );
   }
 
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function calls the channelService service to add a user to the channel.
+  */
   addUserToChannel(channel, user) {
     console.log("addUserToChannel");
     this._channelService.addUserToChannel(channel, user).subscribe(
@@ -45,6 +60,11 @@ export class ManageChannelsComponent implements OnInit {
     )
   }
 
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 05/09/2018
+    Description --- This function calls the channelService service to delete a channel.
+  */
   deleteChannel(channel){
     this._channelService.deleteChannel(channel).subscribe(
       data => {

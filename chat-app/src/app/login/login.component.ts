@@ -13,6 +13,10 @@ export class LoginComponent implements OnInit {
   public users;
   constructor(private router:Router, private form:FormsModule, private _userService: UsersService) { }
 
+  /*
+    Author -------- Andrew Campbell
+    Description --- This function is used to determine if the user has logged in, if they have, redirect.
+  */
   ngOnInit() {
     if(sessionStorage.getItem("username")){
       this.router.navigateByUrl("dashboard");
@@ -21,6 +25,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  /*
+    Author -------- Andrew Campbell
+    Description --- This will call the userService for all of the users.
+  */
   getUsers() {
     console.log("getUsers");
     this._userService.getUsers().subscribe(
@@ -33,7 +41,6 @@ export class LoginComponent implements OnInit {
 
   /*
     Author ------- Andrew Campbell
-    Date --------- 31/08/2018
     Description -- This function will login the user, and redirect them to the dashboard, only if they are a registered user.
   */
   loginUser(event){

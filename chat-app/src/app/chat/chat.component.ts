@@ -15,6 +15,11 @@ export class ChatComponent implements OnInit {
   connection
   constructor(private sockServer: SocketService, private router:Router) { }
 
+
+  /*
+    Author -------- Andrew Campbell
+    Description --- This function will initiate the socket and check if the user is logged in. If they're not logged in, they're redirected.
+  */
   ngOnInit() {
     if(!sessionStorage.getItem("username")){
       console.log("there is no username");
@@ -28,16 +33,30 @@ export class ChatComponent implements OnInit {
       this.message = '';
     });
   }
+
+  /*
+    Author -------- Andrew Campbell
+    Description --- This function is used to send a message through the socket.
+  */
   sendMessage(){
     let data = '[' + this.username + ']' + this.message;
     this.sockServer.sendMessage(data);
   }
 
+  /*
+    Author -------- Andrew Campbell
+    Description --- This function is called to end the socket connection.
+  */
   ngOnDestroy(){
     if (this.connection) {
       this.connection.unsubscribe();
     }
   }
+
+  /*
+    Author -------- Andrew Campbell
+    Description --- Farily null now.
+  */
   logOut(){
     this.ngOnDestroy();
     sessionStorage.clear();
