@@ -14,7 +14,7 @@ export class DashInterfaceService {
 
   constructor(private http:HttpClient) { }
 
-  getGroups(user_name) {
-    return this.http.get('http://localhost:3000/api/dash');
+  getGroups(user_name, access_level) {
+    return this.http.get('http://localhost:3000/api/dash', {params: {name: user_name, access_level: access_level}});
   }
 }

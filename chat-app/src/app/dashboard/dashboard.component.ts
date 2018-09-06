@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DashInterfaceService } from '../dash-interface.service';
-import { GroupsService } from '../groups.service';
-import { ChannelsService } from '../channels.service';
-import { UsersService } from '../users.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
@@ -15,12 +12,10 @@ import { Observable, of } from 'rxjs';
 
 export class DashboardComponent implements OnInit {
 
-  public users;
-  public channels;
   public groups;
   public shownGroups = [];
 
-  constructor(private _dashService: DashInterfaceService, private _userService: UsersService, private _channelService: ChannelsService, private _groupService: GroupsService, private router:Router) { }
+  constructor(private _dashService: DashInterfaceService, private router:Router) { }
 
   ngOnInit() {
     if(!sessionStorage.getItem("username")){
@@ -33,14 +28,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getGroups() {
-    console.log("getGroups");
-    this._groupService.getGroups().subscribe(
+    this._dashService.getGroups(sessionStorage.getItem("username"), sessionStorage.getItem("access_level")).subscribe(
       data => { this.groups = data },
       err => console.error(err),
       () => console.log('Found Groups')
     );
-    console.log(this.groups);
-    sessionStorage.setItem("groups", this.groups)
   }
 
   navigateChat(channel) {

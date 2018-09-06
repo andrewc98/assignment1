@@ -45,9 +45,42 @@ var groups = require('./data/groups.json');
 var channels = require('./data/channels.json');
 var users = require('./data/users.json');
 
+// --- App get for dashboard End
+app.get('/api/dash', (req, res) => {
+    console.log(req.query.name);
+    fs.readFile('./data/groups.json', 'utf8', function(err, data){
+        if (err) {
+            console.log(err);
+        } else {
+            groupsJSON = JSON.parse(data);
+            if (req.query.access_level != 1) {
+                res.send(groupsJSON);                
+            } else {
+                var groups_to_return = [];
+                groupsJSON.forEach(group => {
+                    var channels_user_in = [];
+                    group.channels.forEach(channel => {
+                        if (channel.users.indexOf(req.query.name) != -1) {
+                            channels_user_in.push(channel);
+                        }
+                    });
+                    if (channels_user_in.length > 0 || group.users.indexOf(req.query.name) != -1) {
+                        console.log(channels_user_in);
+                        groups_to_return.push({
+                            group_name: group.group_name,
+                            channels: channels_user_in
+                        });
+                    }
+                });
+                res.send(groups_to_return);
+            }
+        }
+    });
+});
+// --- App get for dashboard End
+
 // --- App get for groups Start
 app.get('/api/groups', (req, res) => {
-    console.log("get.api/groups");
     fs.readFile('./data/groups.json', 'utf8', function(err, data){
         if (err) {
             console.log(err);

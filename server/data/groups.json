@@ -7,13 +7,18 @@
                 "super",
                 "group"
             ]
-        },     
+        },
         {
             "name": "Tennis",
             "users": [
                 "super"
             ]
-        }]
+        }],
+        "users": [
+            "super",
+            "group",
+            "naomi"
+        ]
     },
     {
         "group_name": "Cooking",
@@ -25,10 +30,15 @@
             ]
         },
         {
-            "channel_name": "French",
+            "name": "French",
             "users": [
                 "naomi"
             ]
-        }]
+        }],
+        "users": [
+            "naomi",
+            "justin",
+            "super"
+        ]
     }
 ]
