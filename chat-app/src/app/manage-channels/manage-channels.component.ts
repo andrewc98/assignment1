@@ -52,12 +52,14 @@ export class ManageChannelsComponent implements OnInit {
     Description --- This function calls the channelService service to add a user to the channel.
   */
   addUserToChannel(channel, user) {
-    console.log("addUserToChannel");
-    this._channelService.addUserToChannel(channel, user).subscribe(
-      data => { this.channels = data },
-      err => console.error(err),
-      () => console.log('Added User To Channel')
-    )
+    if (channel && user) {
+      console.log("addUserToChannel");
+      this._channelService.addUserToChannel(channel, user).subscribe(
+        data => { this.channels = data },
+        err => console.error(err),
+        () => console.log('Added User To Channel')
+      )
+    }
   }
 
   /*
@@ -84,19 +86,21 @@ export class ManageChannelsComponent implements OnInit {
     Description -- This function will login the user, and redirect them to chat, only if they are a registered user.
   */
   createChannel(channel_name){
-    let body = {
-      channel_name: channel_name,
-      users: []
-    }
-    this._channelService.createChannel(body).subscribe(
-      data => {
-        this.getChannels();
-        return true;
-      },
-      error => {
-        console.error(error);
-        console.error('Unexpected error encountered creating channel.');
+    if (channel_name) {
+      let body = {
+        channel_name: channel_name,
+        users: []
       }
-    )
+      this._channelService.createChannel(body).subscribe(
+        data => {
+          this.getChannels();
+          return true;
+        },
+        error => {
+          console.error(error);
+          console.error('Unexpected error encountered creating channel.');
+        }
+      )
+    }
   }
 }

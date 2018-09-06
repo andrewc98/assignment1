@@ -53,12 +53,14 @@ export class ManageGroupsComponent implements OnInit {
     Description --- This function calls the groupService function to add a user or channel to the group.
   */
   addToGroup(channel_name, group, type) {
-    console.log("addToGroup");
-    this._groupService.addToGroup(channel_name, group, type).subscribe(
-      data => { this.groups = data },
-      err => console.error(err),
-      () => console.log('Added To Group')
-    )
+    if (channel_name != "" && group && type) {
+      console.log("addToGroup");
+      this._groupService.addToGroup(channel_name, group, type).subscribe(
+        data => { this.groups = data },
+        err => console.error(err),
+        () => console.log('Added To Group')
+      )
+    }
   }
 
   /*
@@ -67,20 +69,22 @@ export class ManageGroupsComponent implements OnInit {
     Description -- This function is used to create a new group.
   */
   createGroup(group_name){
-    let body = {
-      group_name: group_name,
-      channels: []
-    }
-    this._groupService.createGroups(body).subscribe(
-      data => {
-        this.getGroups();
-        return true;
-      },
-      error => {
-        console.error(error);
-        console.error('Unexpected error encountered creating group.');
+    if (group_name) {
+      let body = {
+        group_name: group_name,
+        channels: []
       }
-    )
+      this._groupService.createGroups(body).subscribe(
+        data => {
+          this.getGroups();
+          return true;
+        },
+        error => {
+          console.error(error);
+          console.error('Unexpected error encountered creating group.');
+        }
+      )
+    }
   }
 
 
@@ -90,15 +94,17 @@ export class ManageGroupsComponent implements OnInit {
     Description --- This function deletes a group.
   */
   deleteGroup(group){
-    this._groupService.deleteGroup(group).subscribe(
-      data => {
-        this.getGroups();
-        return true;
-      },
-      error => {
-        console.error(error);
-        console.error('Unexpected error encountered creating group.');
-      }
-    )
+    if (group) {
+      this._groupService.deleteGroup(group).subscribe(
+        data => {
+          this.getGroups();
+          return true;
+        },
+        error => {
+          console.error(error);
+          console.error('Unexpected error encountered creating group.');
+        }
+      )
+    }
   }
 }

@@ -1,1 +1,44 @@
-[{"group_name":"Sporting","channels":[{"channel_name":"Rugby League","users":["super","group","Andrew"]},{"channel_name":"Tennis","users":["super"]}],"users":["super","group","naomi","Andrew"]}]
+[
+    {
+        "group_name": "Sporting",
+        "channels": [{
+            "channel_name": "Rugby League",
+            "users": [
+                "super",
+                "group"
+            ]
+        },     
+        {
+            "channel_name": "Tennis",
+            "users": [
+                "super"
+            ]
+        }],
+        "users": [
+            "super",
+            "group",
+            "naomi"
+        ]
+    },
+    {
+        "group_name": "Cooking",
+        "channels": [{
+            "channel_name": "Italian",
+            "users": [
+                "naomi",
+                "justin"
+            ]
+        },
+        {
+            "channel_name": "French",
+            "users": [
+                "naomi"
+            ]
+        }],
+        "users": [
+            "naomi",
+            "justin",
+            "super"
+        ]
+    }
+]
