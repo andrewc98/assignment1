@@ -1,1 +1,44 @@
-[{"group_name":"Language","channels":[{"name":"Golf","users":["Andrew"]}]}]
+[
+    {
+        "group_name": "Sporting",
+        "channels": [{
+            "name": "Rugby League",
+            "users": [
+                "super",
+                "group"
+            ]
+        },     
+        {
+            "name": "Tennis",
+            "users": [
+                "super"
+            ]
+        }],
+        "users": [
+            "super",
+            "group",
+            "naomi"
+        ]
+    },
+    {
+        "group_name": "Cooking",
+        "channels": [{
+            "name": "Italian",
+            "users": [
+                "naomi",
+                "justin"
+            ]
+        },
+        {
+            "name": "French",
+            "users": [
+                "naomi"
+            ]
+        }],
+        "users": [
+            "naomi",
+            "justin",
+            "super"
+        ]
+    }
+]

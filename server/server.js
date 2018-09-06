@@ -89,7 +89,7 @@ app.post('/api/groups', function (req, res) {
     let existing_group = groups.find(x => x.group_name == group_name);
 
     if (existing_group == undefined) {
-        let new_group = {"group_name": group_name, "channels": []};
+        let new_group = {"group_name": group_name, "channels": [], "users": []};
         groups.push(new_group);
         groupsJSON = JSON.stringify(groups);
         fs.writeFile('./data/groups.json', groupsJSON,'utf-8',function(err){
@@ -100,31 +100,47 @@ app.post('/api/groups', function (req, res) {
 });
 app.put('/api/groups/:id', function (req, res) {
     console.log('Add Channel to Group');
-    let channel_name = req.body[0];
-    console.log(channel_name);
+    let channel_user_name = req.body[0];
     let group_name = req.body[1].group_name;
-    console.log(group_name);
+    let type_name = req.body[2];
 
-    let channel_to_add = channels.find(x => x.channel_name == channel_name);
-    console.log(channel_to_add);
-
-    if (channel_to_add) {
-        let group_to_add = groups.find(x => x.group_name == group_name);
-        if (group_to_add.channels.indexOf(channel_name) == -1) {
-
-            groups = groups.filter(x => x.group_name != group_name);
-            group_to_add.channels.push({
-                name: channel_name,
-                users: []
-            });
-
-            groups.push(group_to_add);
-            let new_groups = JSON.stringify(groups);
-            fs.writeFile('./data/groups.json', new_groups,'utf-8',function(err){
-                if (err) throw err;
-                console.log(new_groups);
-                res.send(new_groups);
-            });
+    if (type_name == 'channel') {
+        let channel_to_add = channels.find(x => x.channel_name == channel_user_name);
+        if (channel_to_add) {
+            let group_to_add = groups.find(x => x.group_name == group_name);
+            if (group_to_add.channels && group_to_add.channels.indexOf(channel_user_name) == -1) {
+    
+                groups = groups.filter(x => x.group_name != group_name);
+                group_to_add.channels.push({
+                    name: channel_user_name,
+                    users: []
+                });
+    
+                groups.push(group_to_add);
+                let new_groups = JSON.stringify(groups);
+                fs.writeFile('./data/groups.json', new_groups,'utf-8',function(err){
+                    if (err) throw err;
+                    console.log(new_groups);
+                    res.send(new_groups);
+                });
+            }
+        }
+    } else if (type_name == 'user') {
+        let user_to_add = users.find(x => x.user_name == channel_user_name);
+        if (user_to_add) {
+            let group_to_add = groups.find(x => x.group_name == group_name);
+            console.log(group_to_add);
+            if (!group_to_add.users || group_to_add.users.indexOf(channel_user_name) == -1) {    
+                groups = groups.filter(x => x.group_name != group_name);
+                group_to_add.users.push(channel_user_name);
+                groups.push(group_to_add);
+                let new_groups = JSON.stringify(groups);
+                fs.writeFile('./data/groups.json', new_groups,'utf-8',function(err){
+                    if (err) throw err;
+                    console.log(new_groups);
+                    res.send(new_groups);
+                });
+            }
         }
     }
 });

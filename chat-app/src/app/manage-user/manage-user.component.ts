@@ -49,16 +49,18 @@ export class ManageUserComponent implements OnInit {
     Description -- This function will delete a user from the JSON files.
   */
   deleteUser(user){
-    this._userService.deleteUser(user).subscribe(
-      data => {
-        this.getUsers();
-        return true;
-      },
-      error => {
-        console.error(error);
-        console.error('Unexpected error encountered deleting user.');
-      }
-    )
+    if (sessionStorage.getItem("access_level") == '3' && sessionStorage.getItem("username") != user.user_name) {
+      this._userService.deleteUser(user).subscribe(
+        data => {
+          this.getUsers();
+          return true;
+        },
+        error => {
+          console.error(error);
+          console.error('Unexpected error encountered deleting user.');
+        }
+      )
+    }
   }
 
   /*
@@ -83,7 +85,10 @@ export class ManageUserComponent implements OnInit {
   }
 
   changeLevel(user, access_level) {
-    if ((user.access_level != '3' && access_level == '+') || (user.access_level != '1' && access_level == '-')) {
+    if (((user.access_level != '3' && access_level == '+') || (user.access_level != '1' && access_level == '-')) && 
+        !(user.access_level == '2' && access_level == '+' && sessionStorage.getItem("access_level") == "2") && 
+        !(user.access_level == '3' && access_level == '-' && sessionStorage.getItem("access_level") == "2") &&
+         (sessionStorage.getItem("username") != user.user_name)) {
       console.log("changeLevel");
       this._userService.changeLevel(user, access_level).subscribe(
         data => { 

@@ -17,7 +17,7 @@ export class ManageGroupsComponent implements OnInit {
     if(!sessionStorage.getItem("username")){
       console.log("No Username found.");
       this.router.navigateByUrl("home");
-    } else if(sessionStorage.getItem("access_level") != "3"){
+    } else if(sessionStorage.getItem("access_level") == "1"){
       console.log(sessionStorage.getItem("access_level"));
       this.router.navigateByUrl("home");
     } else {
@@ -35,9 +35,9 @@ export class ManageGroupsComponent implements OnInit {
     );
   }
 
-  addChannelToGroup(channel_name, group) {
+  addToGroup(channel_name, group, type) {
     console.log("addChannelToGroup");
-    this._groupService.addChannelToGroup(channel_name, group).subscribe(
+    this._groupService.addToGroup(channel_name, group, type).subscribe(
       data => { this.groups = data },
       err => console.error(err),
       () => console.log('Added User To Channel')
