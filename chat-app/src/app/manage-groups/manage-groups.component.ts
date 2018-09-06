@@ -50,12 +50,24 @@ export class ManageGroupsComponent implements OnInit {
     Description -- This function is used to create a new group.
   */
   createGroup(group_name){
-    console.log("Here :D");
     let body = {
       group_name: group_name,
       channels: []
     }
     this._groupService.createGroups(body).subscribe(
+      data => {
+        this.getGroups();
+        return true;
+      },
+      error => {
+        console.error(error);
+        console.error('Unexpected error encountered creating group.');
+      }
+    )
+  }
+
+  deleteGroup(group){
+    this._groupService.deleteGroup(group).subscribe(
       data => {
         this.getGroups();
         return true;

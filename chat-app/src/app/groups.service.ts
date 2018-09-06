@@ -29,4 +29,8 @@ export class GroupsService {
     console.log("createGroupJSON");
     return this.http.post('http://localhost:3000/api/groups/', group, httpOptions);
   }
+
+  deleteGroup(group) {
+    return this.http.delete('http://localhost:3000/api/groups/' + group.group_name);
+  }
 }

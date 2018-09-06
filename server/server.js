@@ -115,7 +115,10 @@ app.put('/api/groups/:id', function (req, res) {
         if (group_to_add.channels.indexOf(channel_name) == -1) {
 
             groups = groups.filter(x => x.group_name != group_name);
-            group_to_add.channels.push(channel_name);
+            group_to_add.channels.push({
+                name: channel_name,
+                users: []
+            });
 
             groups.push(group_to_add);
             let new_groups = JSON.stringify(groups);
@@ -126,6 +129,18 @@ app.put('/api/groups/:id', function (req, res) {
             });
         }
     }
+});
+app.delete('/api/groups/:group_name', function (req, res) {
+    console.log('Delete Group');
+    let group_name = req.params.group_name;
+    let del = groups.find(x => x.group_name == group_name);
+    groups = groups.filter(x => x.group_name != group_name);    
+    let new_groups = JSON.stringify(groups);
+    fs.writeFile('./data/groups.json',new_groups,'utf-8',function(err){
+        if (err) throw err;
+        console.log(del);
+        res.send(del);
+    });
 });
 // --- App get for groups End
 
@@ -168,13 +183,44 @@ app.put('/api/channels/:id', function (req, res) {
             channels = channels.filter(x => x.channel_name != channel_name);
             channel_to_add.users.push(user_name);
             channels.push(channel_to_add);
-            let new_channels = JSON.stringify(channels);
-            fs.writeFile('./data/channels.json', new_channels,'utf-8',function(err){
-                if (err) throw err;
-                console.log(new_channels);
-                res.send(new_channels);
+            groups.forEach(group => {
+                group.channels.forEach(channel => {
+                    console.log(channel_name + " " + channel.name);
+                    if (channel.name == channel_name) {
+                        channel.users.push(user_name);
+                        new_groups = JSON.stringify(groups);
+                        fs.writeFile('./data/groups.json', new_groups,'utf-8',function(err){
+                            if (err) throw err;
+                        });
+                    }
+                });
+            });
+        } else {
+            channels.forEach(channel => {
+                if (channel.channel_name == channel_name) {
+                    let remove_index = channel.users.indexOf(user_name);
+                    if (remove_index != -1) {
+                        channel.users.splice(remove_index, 1);
+                    }
+                }
+            });
+
+            groups.forEach(group => {
+                group.channels.forEach(channel => {
+                    if (channel.channel_name == channel_name) {
+                        let remove_index = channel.users.indexOf(user_name);
+                        if (remove_index != -1) {
+                            channel.users.splice(remove_index, 1);
+                        }
+                    }
+                });
             });
         }
+        let new_channels = JSON.stringify(channels);
+        fs.writeFile('./data/channels.json', new_channels,'utf-8',function(err){
+            if (err) throw err;
+            res.send(new_channels);
+        });
     }
 });
 app.delete('/api/channels/:channel_name', function (req, res) {
@@ -182,6 +228,21 @@ app.delete('/api/channels/:channel_name', function (req, res) {
     let channel_name = req.params.channel_name;
     let del = channels.find(x => x.channel_name == channel_name);
     channels = channels.filter(x => x.channel_name != channel_name);
+
+    groups.forEach(group => {
+        group.channels.forEach(channel => {
+            if (channel.name == channel_name) {
+                let remove_index = group.channels.indexOf(channel);
+                group.channels.splice(remove_index, 1);
+            }
+        });
+    });
+    
+    let new_groups = JSON.stringify(groups);
+    fs.writeFile('./data/groups.json',new_groups,'utf-8',function(err){
+        if (err) throw err;
+    });
+
     let new_channels = JSON.stringify(channels);
     fs.writeFile('./data/channels.json',new_channels,'utf-8',function(err){
         if (err) throw err;
@@ -287,10 +348,14 @@ app.delete('/api/users/:user_name', function (req, res) {
     });
 
     let new_groups = JSON.stringify(groups);
-    fs.writeFile('./data/groups.json',new_groups,'utf-8',function(err){});
+    fs.writeFile('./data/groups.json',new_groups,'utf-8',function(err){
+        if (err) throw err;
+    });
 
     let new_channels = JSON.stringify(channels);
-    fs.writeFile('./data/channels.json',new_channels,'utf-8',function(err){});
+    fs.writeFile('./data/channels.json',new_channels,'utf-8',function(err){
+        if (err) throw err;
+    });
 
     let new_users = JSON.stringify(users);
     fs.writeFile('./data/users.json',new_users,'utf-8',function(err){
