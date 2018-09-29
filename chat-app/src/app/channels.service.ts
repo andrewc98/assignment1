@@ -49,6 +49,6 @@ export class ChannelsService {
     Description --- This function uses the http to access the node server to delete a channel, and it's connections.
   */
   deleteChannel(channel) {
-    return this.http.delete('http://localhost:3000/api/channels/' + channel.channel_name);
+    return this.http.delete('http://localhost:3000/api/channels/' + channel.name);
   }
 }
