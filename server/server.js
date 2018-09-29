@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors')
 const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017/mydb';
 
 var corsOptions = {
   origin: 'http://localhost:4200',
@@ -328,33 +329,41 @@ app.delete('/api/channels/:channel_name', function (req, res) {
     Description --- This function will get all of the users from the user.json file.
 */
 app.get('/api/users', (req, res) => {
+    console.log("get.api/users");
 
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         if (err) { return console.log(err) }
         const dbName = 'mydb';
-        var products = db.db(dbName);
+        var users = db.db(dbName);
     
-        // Drop & Create products
-        products.createCollection("products", function(err, res) {
+        // Drop & Create users
+        users.createCollection("users", function(err, res) {
             if (err) { return console.log(err) }
             console.log("Created");
         });
-        // Drop & Create products
-        
-        
-    });
+        // Drop & Create users
 
+        // Delete & Add the super user
+        const super_user = { _id: 1, name: 'super', email: "supersuzie@gmail.com", access_level: 3 };
+        users.collection("users").deleteOne(super_user, function(err, obj) {
+            if (err) { return console.log(err) }
+            console.log("Deleted: " + super_user.name);
+        });
+        users.collection("users").insertOne(super_user, function(err, obj) {
+            if (err) { return console.log(err) }
+            console.log("Inserted: " + super_user.name);
+        });
+        // Delete & Add the super user
 
-    console.log("get.api/users");
-    fs.readFile('./data/users.json', 'utf8', function(err, data){
-        if (err) {
-            console.log(err);
-        } else {
-            if (data) {
-                usersJSON = JSON.parse(data);
-                res.send(usersJSON);
-            }
-        }
+        // Find users
+        users.collection("users").find({}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            console.log(result);
+            res.send(result);
+        });
+        // Find users
+
+        db.close();
     });
 });
 

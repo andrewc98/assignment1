@@ -44,9 +44,12 @@ export class LoginComponent implements OnInit {
     Description -- This function will login the user, and redirect them to the dashboard, only if they are a registered user.
   */
   loginUser(event){
+    console.log("loginUser");
     if (typeof(Storage) !== "undefined") {
+      console.log("loginUser2");
       for (let name of this.users) {
-        if (name.user_name == this.username) {
+        console.log("loginUser3");
+        if (name.name == this.username) {
           sessionStorage.setItem("username", this.username);
           sessionStorage.setItem("access_level", name.access_level);
           this.router.navigate(['/dashboard']);
