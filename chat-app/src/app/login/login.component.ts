@@ -10,6 +10,7 @@ import { UsersService } from '../users.service';
 })
 export class LoginComponent implements OnInit {
   public username: string;
+  public password: string;
   public users;
   constructor(private router:Router, private form:FormsModule, private _userService: UsersService) { }
 
@@ -44,14 +45,11 @@ export class LoginComponent implements OnInit {
     Description -- This function will login the user, and redirect them to the dashboard, only if they are a registered user.
   */
   loginUser(event){
-    console.log("loginUser");
     if (typeof(Storage) !== "undefined") {
-      console.log("loginUser2");
-      for (let name of this.users) {
-        console.log("loginUser3");
-        if (name.name == this.username) {
+      for (let user of this.users) {
+        if (user.name == this.username && user.password == this.password) {
           sessionStorage.setItem("username", this.username);
-          sessionStorage.setItem("access_level", name.access_level);
+          sessionStorage.setItem("access_level", user.access_level);
           this.router.navigate(['/dashboard']);
         }
       }

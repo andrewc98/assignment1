@@ -434,8 +434,8 @@ app.get('/api/users', (req, res) => {
         // Drop & Create users
 
         // Delete & Add the super user
-        const super_user = {name: 'super', email: "supersuzie@gmail.com", access_level: 3 };
-        users.collection("users").deleteOne(super_user, function(err, obj) {
+        const super_user = {name: 'super', password: "12345", email: "supersuzie@gmail.com", access_level: 3 };
+        users.collection("users").deleteMany({name: super_user.name}, function(err, obj) {
             if (err) { return console.log(err) }
             console.log("Deleted: " + super_user.name);
         });
