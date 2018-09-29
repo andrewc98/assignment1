@@ -40,7 +40,16 @@ var channelsJSON = [];
 var usersJSON = [];
 
 require('./routes.js')(app, path);
-require('./socket.js')(app, io);
+// require('./socket.js')(app, io);
+io.on('connection', (socket)=>{
+    console.log('user connected');
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+    });
+    socket.on('add-message', (message)=>{
+        io.emit('message', {type:'message', text: message});
+    });
+});
 require('./listen.js')(http);
 
 var groups = require('./data/groups.json');
@@ -62,7 +71,11 @@ app.get('/api/dash', (req, res) => {
         // Find users
         database.collection("groups").find({}).toArray(function(err, result) {
             if (err) { return console.log(err) }
-            returnGroups(result);
+            if (req.query.access_level == 3) {
+                res.send(result);
+            } else {
+                returnGroups(result);
+            }
         });
         function returnGroups(groups) {
             var groups_to_return = [];
