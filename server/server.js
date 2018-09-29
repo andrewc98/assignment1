@@ -54,13 +54,19 @@ var users = require('./data/users.json');
     Description --- This function collects all of the content to be displayed for a user. Anything else is not displayed on the dashboard.
 */
 app.get('/api/dash', (req, res) => {
-    fs.readFile('./data/groups.json', 'utf8', function(err, data){
-        if (err) {
-            console.log(err);
-        } else {
-            groupsJSON = JSON.parse(data);
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }    
+        const dbName = 'mydb';
+        var database = db.db(dbName);
+
+        // Find users
+        database.collection("groups").find({}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            returnGroups(result);
+        });
+        function returnGroups(groups) {
             var groups_to_return = [];
-            groupsJSON.forEach(group => {
+            groups.forEach(group => {
                 var channels_user_in = [];
                 group.channels.forEach(channel => {
                     if (channel.users && channel.users.indexOf(req.query.name) != -1) {
@@ -69,13 +75,14 @@ app.get('/api/dash', (req, res) => {
                 });
                 if (group.users && (channels_user_in.length > 0 || group.users.indexOf(req.query.name)) != -1) {
                     groups_to_return.push({
-                        group_name: group.group_name,
+                        group_name: group.name,
                         channels: channels_user_in
                     });
                 }
             });
             res.send(groups_to_return);
         }
+        // Find users
     });
 });
 // --- App get for dashboard End
