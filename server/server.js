@@ -467,37 +467,20 @@ app.post('/api/users', function (req, res) {
   Description -- This function will delete a new user based on the input of the form.
 */
 app.delete('/api/users/:user_name', function (req, res) {
-    console.log('delete users');
-
-    console.log('New User');
-    let user_name = req.body.name;
-    let user_email = req.body.email;
+    console.log('Delete user');
+    let user_name = req.params.user_name;
+    console.log(user_name);
 
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         if (err) { return console.log(err) }
         const dbName = 'mydb';
         var users = db.db(dbName);
 
-        // Delete & Add the super user
-        const new_user = {name: user_name, email: user_email, access_level: 1 };
-        // Define the user
-        
-        var exists = false;
-
-        // Check if the user already exists
-        users.collection("users").find({name: user_name}).toArray(function(err, result) {
-            if (err) { return console.log(err) }
-            if (result) { exists = true; }
-        });
-        // Check if the user already exists
-
         // Add the user to the DB
-        if (exists == false) {
-            users.collection("users").insertOne(new_user, function(err, obj) {
-                if (err) { return console.log(err) }
-                console.log("Inserted: " + new_user.name);
-            });
-        }
+        users.collection("users").deleteOne({name: user_name}, function(err, obj) {
+            if (err) { return console.log(err) }
+            console.log("Deleted: " + user_name);
+        });
         // Add the user to the DB
 
         // Find users
@@ -509,48 +492,6 @@ app.delete('/api/users/:user_name', function (req, res) {
         // Find users
 
         db.close();
-    });
-
-    let user_name = req.params.user_name;
-    let del = users.find(x => x.user_name == user_name);
-    users = users.filter(x => x.user_name != user_name);
-    groups.forEach(group => {
-        if (group.users) {
-            let remove_index = group.users.indexOf(user_name);
-            if (remove_index != -1) {
-                group.users.splice(remove_index, 1);
-            }
-            group.channels.forEach(channel => {
-                let remove_index = channel.users.indexOf(user_name);
-                if (remove_index != -1) {
-                    channel.users.splice(remove_index, 1);
-                }
-            });
-        }
-    });
-    let new_groups = JSON.stringify(groups);
-    fs.writeFile('./data/groups.json',new_groups,'utf-8',function(err){
-        if (err) throw err;
-    });
-    if (channels.length > 0) {
-        channels.forEach(channel => {
-            console.log("1");
-            let remove_index = channel.users.indexOf(user_name);
-            if (remove_index != -1) {
-                channel.users.splice(remove_index, 1);
-            }
-        });
-        let new_channels = JSON.stringify(channels);
-        fs.writeFile('./data/channels.json',new_channels,'utf-8',function(err){
-            if (err) throw err;
-        });
-    }
-
-    let new_users = JSON.stringify(users);
-    fs.writeFile('./data/users.json',new_users,'utf-8',function(err){
-        if (err) throw err;
-        console.log(del);
-        res.send(del);
     });
 });
 // --- App get for users End

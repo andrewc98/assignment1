@@ -53,7 +53,7 @@ export class ManageUserComponent implements OnInit {
     Description -- This function will delete a user from the JSON files.
   */
   deleteUser(user){
-    if (sessionStorage.getItem("access_level") == '3' && sessionStorage.getItem("username") != user.user_name) {
+    if (sessionStorage.getItem("access_level") == '3' && sessionStorage.getItem("username") != user.name) {
       this._userService.deleteUser(user).subscribe(
         data => {
           this.getUsers();

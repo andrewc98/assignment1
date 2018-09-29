@@ -39,7 +39,7 @@ export class UsersService {
     Description --- This function uses the http to access the node server to delete a user from the json file.
   */
   deleteUser(user) {
-    return this.http.delete('http://localhost:3000/api/users/' + user.user_name);
+    return this.http.delete('http://localhost:3000/api/users/' + user.name);
   }
 
   /*
