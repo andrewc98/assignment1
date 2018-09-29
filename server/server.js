@@ -375,56 +375,30 @@ app.get('/api/users', (req, res) => {
 app.put('/api/users/:user_name', function (req, res) {
     console.log('Change Access Level');
     let user_name = req.body[0].name;
-    let access_level = req.body[1];
+    let accessLevel = req.body[1];
+    let currAccessLevel = req.body[0].access_level;
 
-    console.log(user_name);
+
+    var updated_level;
+    if (currAccessLevel == 1 && accessLevel == "+") { updated_level = 2 }
+    else if (currAccessLevel == 2 && accessLevel == "+") { updated_level = 3 }
+    else if (currAccessLevel == 3 && accessLevel == "-") { updated_level = 2 }
+    else { updated_level = 1 }
+
+    console.log(updated_level);
 
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         if (err) { return console.log(err) }
         const dbName = 'mydb';
         var users = db.db(dbName);
 
-        var user_to_update;
-        var update_user;
-
         // Find users
-        users.collection("users").findOne({name: user_name}, function(err, result) {
+        users.collection("users").updateOne({ name: user_name }, { $set: {access_level: updated_level} }, function(err, result) {
             if (err) { return console.log(err) }
             console.log(result);
-            user_to_update = result;
-            update_user = result;
+            res.send(result);
         });
         // Find users
-
-        // while (update_user === undefined) {}
-
-        // // How should it be updated?
-        // if (access_level == "+") {
-        //     if (user_to_update.access_level != 3) {
-        //         update_user.access_level++;
-        //     }
-        // } else {
-        //     if (user_to_update.access_level != 1) {
-        //         update_user.access_level--;
-        //     }
-        // }
-        // // How should it be updated?
-
-        // // Update user
-        // users.collection("users").updateOne(user_to_update, update_user, function(err, res) {
-        //     if (err) { return console.log(err) }
-        // });
-        // // Update user
-
-        // // Find users
-        // users.collection("users").find({}).toArray(function(err, result) {
-        //     if (err) { return console.log(err) }
-        //     // console.log(result);
-        //     res.send(result);
-        // });
-        // // Find users
-
-        db.close();
     });
 });
 /*
