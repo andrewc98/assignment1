@@ -548,33 +548,57 @@ app.delete('/api/users/:user_name', function (req, res) {
         // Add the user to the DB
         database.collection("users").deleteOne({name: user_name}, function(err, obj) {
             if (err) { return console.log(err) }
+            deleteUserFromChannel();
+            deleteUserFromGroup();
+            returnUsers();
             console.log("Deleted: " + user_name);
         });
         // Add the user to the DB
 
         //Remove user from channels
-        database.collection("channels").find({}).toArray(function(err, result) {
-            if (err) { return console.log(err) }
-            result.forEach(element => {
-                removeUserFromChannel(element);
-            });
-        });
-        function removeUserFromChannel(channel) {
-            let new_users = channel.users.filter(x => x != user_name)
-            database.collection("channels").updateOne({ name: channel.name }, { $set: {users: new_users} }, function(err, result) {
+        function deleteUserFromChannel() {
+            database.collection("channels").find({}).toArray(function(err, result) {
                 if (err) { return console.log(err) }
+                result.forEach(element => {
+                    removeUserFromChannel(element);
+                });
             });
+            function removeUserFromChannel(channel) {
+                let new_users = channel.users.filter(x => x != user_name)
+                console.log("removeUserFromChannel");
+                console.log(new_users);
+                database.collection("channels").updateOne({ name: channel.name }, { $set: {users: new_users} }, function(err, result) {
+                    if (err) { return console.log(err) }
+                });
+            }
         }
         //Remove user from channels
 
+        //Remove user from channels
+        function deleteUserFromGroup() {
+            database.collection("groups").find({}).toArray(function(err, result) {
+                if (err) { return console.log(err) }
+                result.forEach(element => {
+                    removeUserFromChannel(element);
+                });
+            });
+            function removeUserFromChannel(group) {
+                let new_users = group.users.filter(x => x != user_name)
+                database.collection("groups").updateOne({ name: group.name }, { $set: {users: new_users} }, function(err, result) {
+                    if (err) { return console.log(err) }
+                });
+            }
+        }
+        //Remove user from channels
 
         // Find users
-        database.collection("users").find({}).toArray(function(err, result) {
-            if (err) { return console.log(err) }
-            console.log(result);
-            res.send(result);
-            // db.close();
-        });
+        function returnUsers() {
+            database.collection("users").find({}).toArray(function(err, result) {
+                if (err) { return console.log(err) }
+                console.log(result);
+                res.send(result);
+            });
+        }
         // Find users
 
     });
