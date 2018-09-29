@@ -51,6 +51,6 @@ export class GroupsService {
     Description --- This function uses the http to access the node server to delete a group from the json.
   */
   deleteGroup(group) {
-    return this.http.delete('http://localhost:3000/api/groups/' + group.group_name);
+    return this.http.delete('http://localhost:3000/api/groups/' + group.name);
   }
 }

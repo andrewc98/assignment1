@@ -149,55 +149,64 @@ app.post('/api/groups', function (req, res) {
 app.put('/api/groups/:id', function (req, res) {
     console.log('.put/api/groups/');
     let channel_user_name = req.body[0];
-    let group_name = req.body[1].group_name;
-    let type_name = req.body[2];
+    let group_name = req.body[1].name;
+    let type_name = req.body[2]; //channel, user
 
-    if (type_name == 'channel') {
-        let channel_to_add = channels.find(x => x.channel_name == channel_user_name);
-        if (channel_to_add) {
-            let group_to_add = groups.find(x => x.group_name == group_name);
-            var good_to_add = true;
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }
+        const dbName = 'mydb';
+        var database = db.db(dbName);
 
-            if (group_to_add.channels) {
-                for (let i = 0; i < group_to_add.channels.length; i++) {
-                    if (group_to_add.channels[i].channel_name == channel_to_add.channel_name) {
-                        group_to_add.channels.splice(i, 1);
-                        good_to_add = false;
-                    }
+        database.collection("groups").findOne({name: group_name}, function(err, result) {
+            console.log('Find Group');
+            console.log(result);
+            if (err) { return console.log(err) }
+            if (result !== null) {
+                findChannel(result);
+            } else {
+                db.close();
+            }
+        });
+        
+        function findChannel(group) {
+            console.log('findChannel');
+            database.collection("channels").findOne({name: channel_user_name}, function(err, result) {
+                if (err) { return console.log(err) }
+                if (result !== null) {
+                    addChannelToGroup(result, group)
+                } else {
+                    db.close();
+                    console.log("Couldn't find channel");
                 }
-            }
-            if (good_to_add) {
-                groups = groups.filter(x => x.group_name != group_name);
-                group_to_add.channels.push(channel_to_add);
-                groups.push({
-                    group_name: group_to_add.group_name,
-                    channels: group_to_add.channels,
-                    users: group_to_add.users
+            });
+        }
+
+        function addChannelToGroup(channel, group) {
+            console.log("addChannelToGroup");
+            if (group.channels.find(x => x.name == channel.name) === undefined) {
+                console.log("Here!");
+                // Find users
+                var new_channels = group.channels;
+                new_channels.push(channel);
+                database.collection("groups").updateOne({ name: group.name }, { $set: {channels: new_channels} }, function(err, result) {
+                    if (err) { return console.log(err) }
+                    returnGroups();
                 });
+                // Find users
             }
         }
-    } else if (type_name == 'user') {
-        let user_to_add = users.find(x => x.user_name == channel_user_name);
-        if (user_to_add) {
-            let group_to_add = groups.find(x => x.group_name == group_name);
-            console.log(group_to_add);
-            if (!group_to_add.users || group_to_add.users.indexOf(channel_user_name) == -1) {    
-                groups = groups.filter(x => x.group_name != group_name);
-                group_to_add.users.push(channel_user_name);
-                groups.push(group_to_add);
-                let new_groups = JSON.stringify(groups);
-                fs.writeFile('./data/groups.json', new_groups,'utf-8',function(err){
-                    if (err) throw err;
-                    res.send(new_groups);
-                });
-            }
+
+        function returnGroups() {
+            console.log('returnGroups');
+            database.collection("groups").find({}).toArray(function(err, result) {
+                if (err) { return console.log(err) }
+                console.log(result);
+                res.send(result);
+                db.close();
+            });
         }
-    }
-    let new_groups = JSON.stringify(groups);
-    fs.writeFile('./data/groups.json', new_groups,'utf-8',function(err){
-        if (err) throw err;
-        res.send(new_groups);
     });
+    
 });
 /*
     Author -------- Andrew Campbell
@@ -207,13 +216,28 @@ app.put('/api/groups/:id', function (req, res) {
 app.delete('/api/groups/:group_name', function (req, res) {
     console.log('Delete Group');
     let group_name = req.params.group_name;
-    let del = groups.find(x => x.group_name == group_name);
-    groups = groups.filter(x => x.group_name != group_name);    
-    let new_groups = JSON.stringify(groups);
-    fs.writeFile('./data/groups.json',new_groups,'utf-8',function(err){
-        if (err) throw err;
-        console.log(del);
-        res.send(del);
+
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }
+        const dbName = 'mydb';
+        var database = db.db(dbName);
+
+        // Delete group from the DB
+        database.collection("groups").deleteOne({name: group_name}, function(err, obj) {
+            if (err) { return console.log(err) }
+            console.log("Deleted: " + group_name);
+        });
+        // Delete group from the DB
+
+        // Find groups
+        database.collection("groups").find({}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            console.log(result);
+            res.send(result);
+        });
+        // Find groups
+
+        db.close();
     });
 });
 // --- App get for groups End
