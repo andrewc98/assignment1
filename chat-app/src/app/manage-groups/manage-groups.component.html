@@ -29,8 +29,8 @@
               <input [(ngModel)]="group_user_name" type="text" placeholder="Group/User Name" class="form-control" name="group_user_name" style="margin: 10px">
             </div>
             <button (click)="deleteGroup(group)" type="submit" class="btn btn-danger" style="margin-left: 10px">Delete Group</button>
-            <button (click)="addToGroup(group_user_name, group, 'channel')" type="submit" class="btn btn-primary" style="margin: 10px">Add/Delete Channel</button>
-            <button (click)="addToGroup(group_user_name, group, 'user')" type="submit" class="btn btn-primary">Add User</button>
+            <button (click)="addToGroup(group_user_name, group, 'channels')" type="submit" class="btn btn-primary" style="margin: 10px">Add/Delete Channel</button>
+            <button (click)="addToGroup(group_user_name, group, 'users')" type="submit" class="btn btn-primary">Add User</button>
           </fieldset>
         </form>
       </div>

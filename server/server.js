@@ -162,12 +162,31 @@ app.put('/api/groups/:id', function (req, res) {
             console.log(result);
             if (err) { return console.log(err) }
             if (result !== null) {
-                findChannel(result);
+                if (type_name == "channels") {
+                    findChannel(result);
+                } else {
+                    addUserToGroup(result);
+                }
             } else {
                 db.close();
             }
         });
-        
+
+        function addUserToGroup(group) {
+            console.log("addChannelToGroup");
+            if (group.users.find(x => x == channel_user_name) === undefined) {
+                console.log("Here!");
+                // Find users
+                var new_users = group.users;
+                new_users.push(channel_user_name);
+                database.collection("groups").updateOne({ name: group.name }, { $set: {users: new_users} }, function(err, result) {
+                    if (err) { return console.log(err) }
+                    returnGroups();
+                });
+                // Find users
+            }
+        }
+
         function findChannel(group) {
             console.log('findChannel');
             database.collection("channels").findOne({name: channel_user_name}, function(err, result) {
@@ -184,15 +203,20 @@ app.put('/api/groups/:id', function (req, res) {
         function addChannelToGroup(channel, group) {
             console.log("addChannelToGroup");
             if (group.channels.find(x => x.name == channel.name) === undefined) {
-                console.log("Here!");
-                // Find users
                 var new_channels = group.channels;
                 new_channels.push(channel);
                 database.collection("groups").updateOne({ name: group.name }, { $set: {channels: new_channels} }, function(err, result) {
                     if (err) { return console.log(err) }
                     returnGroups();
                 });
-                // Find users
+            } else {
+                var new_channels = group.channels.filter(x => x.name !== channel_user_name);
+                console.log(new_channels);
+                console.log(channel_user_name);
+                database.collection("groups").updateOne({ name: group.name }, { $set: {channels: new_channels} }, function(err, result) {
+                    if (err) { return console.log(err) }
+                    returnGroups();
+                });
             }
         }
 
@@ -200,13 +224,11 @@ app.put('/api/groups/:id', function (req, res) {
             console.log('returnGroups');
             database.collection("groups").find({}).toArray(function(err, result) {
                 if (err) { return console.log(err) }
-                console.log(result);
                 res.send(result);
                 db.close();
             });
         }
     });
-    
 });
 /*
     Author -------- Andrew Campbell
