@@ -72,11 +72,12 @@ export class ManageUserComponent implements OnInit {
     Date --------- 02/09/2018
     Description -- This function will create a new user based on the input of the form.
   */
-  createUser(name, email) {
+  createUser(name, email, password) {
     if (name && email) {
       let body = {
         name: name,
-        email: email
+        email: email,
+        password: password
       }
       this._userService.createUser(body).subscribe(
         data => { 

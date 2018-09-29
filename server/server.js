@@ -495,6 +495,7 @@ app.post('/api/users', function (req, res) {
     console.log('New User');
     let user_name = req.body.name;
     let user_email = req.body.email;
+    let user_pass = req.body.password;
 
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         if (err) { return console.log(err) }
@@ -502,7 +503,7 @@ app.post('/api/users', function (req, res) {
         var users = db.db(dbName);
 
         // Delete & Add the super user
-        const new_user = {name: user_name, email: user_email, access_level: 1 };
+        const new_user = {name: user_name, password: user_pass, email: user_email, access_level: 1 };
         // Define the user
 
         users.collection("users").findOne({name: user_name}, function(err, result) {
