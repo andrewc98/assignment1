@@ -19,10 +19,10 @@
 <div *ngFor="let group of groups">
   <div class="container" style="padding: 20px;">
     <div class="card border-primary mb-3" style="max-width: 100em;">
-      <div class="card-header">{{group.group_name}}</div>
+      <div class="card-header">{{group.name}}</div>
       <div class="card-body">
         <form>
-          <p *ngFor="let channel of group.channels" style="margin: 10px">Channel: {{channel.channel_name}}</p>
+          <p *ngFor="let channel of group.channels" style="margin: 10px">Channels: {{channel.name}}</p>
           <p style="margin: 10px">Users: {{group.users}}</p>
           <fieldset>
             <div class="form-group">

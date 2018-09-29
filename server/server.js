@@ -87,33 +87,57 @@ app.get('/api/dash', (req, res) => {
     Description --- This function reads all of the groups from JSON and returns them.
 */
 app.get('/api/groups', (req, res) => {
-    fs.readFile('./data/groups.json', 'utf8', function(err, data){
-        if (err) {
-            console.log(err);
-        } else {
-            groupsJSON = JSON.parse(data);
-            res.send(groupsJSON);
-        }
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }    
+        const dbName = 'mydb';
+        var database = db.db(dbName);
+
+        // Find users
+        database.collection("groups").find({}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            console.log(result);
+            res.send(result);
+        });
+        // Find users
     });
 });
 /*
     Author -------- Andrew Campbell
     Date ---------- 05/09/2018
-    Description --- This function creates a new channel, if it does not already exist.
+    Description --- This function creates a new group, if it does not already exist.
 */
 app.post('/api/groups', function (req, res) {
-    let group_name = req.body.group_name;
-    let existing_group = groups.find(x => x.group_name == group_name);
 
-    if (existing_group == undefined) {
-        let new_group = {"group_name": group_name, "channels": [], "users": []};
-        groups.push(new_group);
-        groupsJSON = JSON.stringify(groups);
-        fs.writeFile('./data/groups.json', groupsJSON,'utf-8',function(err){
-            if (err) throw err;
-            res.send(groups);
+    let group_name = req.body.group_name;
+
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }    
+        const dbName = 'mydb';
+        var database = db.db(dbName);
+
+        database.collection("groups").findOne({name: group_name}, function(err, result) {
+            if (err) { return console.log(err) }
+            console.log("");
+            if (result === null) {
+                addGroup();
+            } else {
+                db.close();
+            }
         });
-    }
+
+        // Add the user to the DB
+        function addGroup() {
+            console.log("Add Group");
+            database.collection("groups").insertOne({name: group_name, channels: [], users: [] }, function(err, result) {
+                console.log("Adding Group");
+                if (err) { return console.log(err) }
+                res.send(result);
+                db.close();
+            });
+        }
+    });
+    // Add the user to the DB
+
 });
 /*
     Author -------- Andrew Campbell
