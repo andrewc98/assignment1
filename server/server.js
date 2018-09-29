@@ -6,6 +6,7 @@ const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors')
+const MongoClient = require('mongodb').MongoClient;
 
 var corsOptions = {
   origin: 'http://localhost:4200',
@@ -327,6 +328,23 @@ app.delete('/api/channels/:channel_name', function (req, res) {
     Description --- This function will get all of the users from the user.json file.
 */
 app.get('/api/users', (req, res) => {
+
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }
+        const dbName = 'mydb';
+        var products = db.db(dbName);
+    
+        // Drop & Create products
+        products.createCollection("products", function(err, res) {
+            if (err) { return console.log(err) }
+            console.log("Created");
+        });
+        // Drop & Create products
+        
+        
+    });
+
+
     console.log("get.api/users");
     fs.readFile('./data/users.json', 'utf8', function(err, data){
         if (err) {
