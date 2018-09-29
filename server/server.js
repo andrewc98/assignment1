@@ -344,7 +344,7 @@ app.get('/api/users', (req, res) => {
         // Drop & Create users
 
         // Delete & Add the super user
-        const super_user = { _id: 1, name: 'super', email: "supersuzie@gmail.com", access_level: 3 };
+        const super_user = {name: 'super', email: "supersuzie@gmail.com", access_level: 3 };
         users.collection("users").deleteOne(super_user, function(err, obj) {
             if (err) { return console.log(err) }
             console.log("Deleted: " + super_user.name);
@@ -408,6 +408,45 @@ app.post('/api/users', function (req, res) {
     console.log('New User');
     let user_name = req.body.name;
     let user_email = req.body.email;
+
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }
+        const dbName = 'mydb';
+        var users = db.db(dbName);
+
+        // Delete & Add the super user
+        const new_user = {name: user_name, email: user_email, access_level: 1 };
+        // Define the user
+        
+        var exists = false;
+
+        // Check if the user already exists
+        users.collection("users").find({name: user_name}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            if (result) { exists = true; }
+        });
+        // Check if the user already exists
+
+        // Add the user to the DB
+        if (exists == false) {
+            users.collection("users").insertOne(new_user, function(err, obj) {
+                if (err) { return console.log(err) }
+                console.log("Inserted: " + new_user.name);
+            });
+        }
+        // Add the user to the DB
+
+        // Find users
+        users.collection("users").find({}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            console.log(result);
+            res.send(result);
+        });
+        // Find users
+
+        db.close();
+    });
+
     let existing_user = users.find(x => x.user_name == user_name);
 
     if (existing_user == undefined) {
@@ -429,6 +468,49 @@ app.post('/api/users', function (req, res) {
 */
 app.delete('/api/users/:user_name', function (req, res) {
     console.log('delete users');
+
+    console.log('New User');
+    let user_name = req.body.name;
+    let user_email = req.body.email;
+
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }
+        const dbName = 'mydb';
+        var users = db.db(dbName);
+
+        // Delete & Add the super user
+        const new_user = {name: user_name, email: user_email, access_level: 1 };
+        // Define the user
+        
+        var exists = false;
+
+        // Check if the user already exists
+        users.collection("users").find({name: user_name}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            if (result) { exists = true; }
+        });
+        // Check if the user already exists
+
+        // Add the user to the DB
+        if (exists == false) {
+            users.collection("users").insertOne(new_user, function(err, obj) {
+                if (err) { return console.log(err) }
+                console.log("Inserted: " + new_user.name);
+            });
+        }
+        // Add the user to the DB
+
+        // Find users
+        users.collection("users").find({}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            console.log(result);
+            res.send(result);
+        });
+        // Find users
+
+        db.close();
+    });
+
     let user_name = req.params.user_name;
     let del = users.find(x => x.user_name == user_name);
     users = users.filter(x => x.user_name != user_name);
