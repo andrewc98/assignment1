@@ -99,7 +99,7 @@ export class ManageUserComponent implements OnInit {
     if (((user.access_level != '3' && access_level == '+') || (user.access_level != '1' && access_level == '-')) && 
         !(user.access_level == '2' && access_level == '+' && sessionStorage.getItem("access_level") == "2") && 
         !(user.access_level == '3' && access_level == '-' && sessionStorage.getItem("access_level") == "2") &&
-         (sessionStorage.getItem("username") != user.user_name)) {
+         (sessionStorage.getItem("username") != user.name)) {
       console.log("changeLevel");
       this._userService.changeLevel(user, access_level).subscribe(
         data => { 

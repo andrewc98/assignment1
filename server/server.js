@@ -358,7 +358,7 @@ app.get('/api/users', (req, res) => {
         // Find users
         users.collection("users").find({}).toArray(function(err, result) {
             if (err) { return console.log(err) }
-            console.log(result);
+            // console.log(result);
             res.send(result);
         });
         // Find users
@@ -374,30 +374,58 @@ app.get('/api/users', (req, res) => {
 */
 app.put('/api/users/:user_name', function (req, res) {
     console.log('Change Access Level');
-    let user_name = req.body[0].user_name;
+    let user_name = req.body[0].name;
     let access_level = req.body[1];
 
-    let user_to_add = users.find(x => x.user_name == user_name);
+    console.log(user_name);
 
-    if (user_to_add) {
-        if (access_level == '+') {
-            if (user_to_add.access_level == '1') { user_to_add.access_level = '2' }
-            else if (user_to_add.access_level = '1') { user_to_add.access_level = '3' }
-        } else if (access_level == '-') {
-            if (user_to_add.access_level == '3') { user_to_add.access_level = '2' }
-            else if (user_to_add.access_level = '2') { user_to_add.access_level = '1' }
-        }
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        if (err) { return console.log(err) }
+        const dbName = 'mydb';
+        var users = db.db(dbName);
 
-        console.log(user_to_add);
+        var user_to_update;
+        var update_user;
 
-        users = users.filter(x => x.user_name != user_name);
-        users.push(user_to_add);
-        let new_users = JSON.stringify(users);
-        fs.writeFile('./data/users.json', new_users,'utf-8',function(err){
-            if (err) throw err;
-            res.send(new_users);
+        // Find users
+        users.collection("users").findOne({name: user_name}, function(err, result) {
+            if (err) { return console.log(err) }
+            console.log(result);
+            user_to_update = result;
+            update_user = result;
         });
-    }
+        // Find users
+
+        // while (update_user === undefined) {}
+
+        // // How should it be updated?
+        // if (access_level == "+") {
+        //     if (user_to_update.access_level != 3) {
+        //         update_user.access_level++;
+        //     }
+        // } else {
+        //     if (user_to_update.access_level != 1) {
+        //         update_user.access_level--;
+        //     }
+        // }
+        // // How should it be updated?
+
+        // // Update user
+        // users.collection("users").updateOne(user_to_update, update_user, function(err, res) {
+        //     if (err) { return console.log(err) }
+        // });
+        // // Update user
+
+        // // Find users
+        // users.collection("users").find({}).toArray(function(err, result) {
+        //     if (err) { return console.log(err) }
+        //     // console.log(result);
+        //     res.send(result);
+        // });
+        // // Find users
+
+        db.close();
+    });
 });
 /*
     Author -------- Andrew Campbell
@@ -439,26 +467,13 @@ app.post('/api/users', function (req, res) {
         // Find users
         users.collection("users").find({}).toArray(function(err, result) {
             if (err) { return console.log(err) }
-            console.log(result);
+            // console.log(result);
             res.send(result);
         });
         // Find users
 
         db.close();
     });
-
-    let existing_user = users.find(x => x.user_name == user_name);
-
-    if (existing_user == undefined) {
-        let new_user = {"user_name": user_name, "email": user_email, "access_level": 1};
-        users.push(new_user);
-        console.log(users);
-        usersJSON = JSON.stringify(users);
-        fs.writeFile('./data/users.json',usersJSON,'utf-8',function(err){
-            if (err) throw err;
-            res.send(users);
-        });
-    }
 });
 
 /*

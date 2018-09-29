@@ -50,6 +50,6 @@ export class UsersService {
   changeLevel(user, level) {
     let body = [user, level]
     console.log(body);
-    return this.http.put('http://localhost:3000/api/users/' + user.user_name, body, httpOptions);
+    return this.http.put('http://localhost:3000/api/users/' + user.name, body, httpOptions);
   }
 }
