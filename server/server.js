@@ -579,12 +579,25 @@ app.delete('/api/users/:user_name', function (req, res) {
             database.collection("groups").find({}).toArray(function(err, result) {
                 if (err) { return console.log(err) }
                 result.forEach(element => {
-                    removeUserFromChannel(element);
+                    removeUserFromGroup(element);
                 });
             });
-            function removeUserFromChannel(group) {
+            function removeUserFromGroup(group) {
                 let new_users = group.users.filter(x => x != user_name)
                 database.collection("groups").updateOne({ name: group.name }, { $set: {users: new_users} }, function(err, result) {
+                    if (err) { return console.log(err) }
+                    group.channels.forEach(channel => {
+                        removeUserFromGroupChannel(group, channel);
+                    });
+                });
+            }
+            function removeUserFromGroupChannel(group, channel) {
+                var channel_to_add = channel;
+                var new_users = channel.users.filter(x => x != user_name);
+                channel_to_add.users = new_users;
+                var new_channels = group.channels.filter(x => x != channel);
+                new_channels.push(channel_to_add);
+                database.collection("groups").updateOne({ name: group.name }, { $set: {channels: new_channels} }, function(err, result) {
                     if (err) { return console.log(err) }
                 });
             }
