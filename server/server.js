@@ -378,14 +378,11 @@ app.put('/api/users/:user_name', function (req, res) {
     let accessLevel = req.body[1];
     let currAccessLevel = req.body[0].access_level;
 
-
     var updated_level;
     if (currAccessLevel == 1 && accessLevel == "+") { updated_level = 2 }
     else if (currAccessLevel == 2 && accessLevel == "+") { updated_level = 3 }
     else if (currAccessLevel == 3 && accessLevel == "-") { updated_level = 2 }
     else { updated_level = 1 }
-
-    console.log(updated_level);
 
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         if (err) { return console.log(err) }
@@ -395,7 +392,6 @@ app.put('/api/users/:user_name', function (req, res) {
         // Find users
         users.collection("users").updateOne({ name: user_name }, { $set: {access_level: updated_level} }, function(err, result) {
             if (err) { return console.log(err) }
-            console.log(result);
             res.send(result);
         });
         // Find users
@@ -419,34 +415,28 @@ app.post('/api/users', function (req, res) {
         // Delete & Add the super user
         const new_user = {name: user_name, email: user_email, access_level: 1 };
         // Define the user
-        
-        var exists = false;
 
-        // Check if the user already exists
-        users.collection("users").find({name: user_name}).toArray(function(err, result) {
+        users.collection("users").findOne({name: user_name}, function(err, result) {
             if (err) { return console.log(err) }
-            if (result) { exists = true; }
+            console.log(result);
+            if (result === null) {
+                addUser(new_user);
+            } else {
+                db.close();
+            }
         });
-        // Check if the user already exists
 
         // Add the user to the DB
-        if (exists == false) {
-            users.collection("users").insertOne(new_user, function(err, obj) {
+        function addUser(new_user) {
+            console.log("Add User");
+            users.collection("users").insertOne(new_user, function(err, result) {
+                console.log("Adding User");
                 if (err) { return console.log(err) }
-                console.log("Inserted: " + new_user.name);
+                res.send(result);
+                db.close();
             });
         }
         // Add the user to the DB
-
-        // Find users
-        users.collection("users").find({}).toArray(function(err, result) {
-            if (err) { return console.log(err) }
-            // console.log(result);
-            res.send(result);
-        });
-        // Find users
-
-        db.close();
     });
 });
 
