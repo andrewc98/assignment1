@@ -39,7 +39,8 @@ export class ChatComponent implements OnInit {
     Description --- This function is used to send a message through the socket.
   */
   sendMessage(){
-    let data = '[' + this.username + ']' + this.message;
+    
+    let data = { channel: sessionStorage.getItem("chat_channel"), message: '[' + this.username + ']' + this.message}
     this.sockServer.sendMessage(data);
   }
 

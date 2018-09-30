@@ -37,9 +37,9 @@ app.get('/manage_users', function(req,res){
 
 require('./routes.js')(app, path);
 io.on('connection', (socket)=>{
-    socket.join("", () => {
+    // socket.join("", () => {
 
-    });
+    // });
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
