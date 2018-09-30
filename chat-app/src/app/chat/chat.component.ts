@@ -32,11 +32,11 @@ export class ChatComponent implements OnInit {
 
     var messages_to_add;
 
-    this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel")).subscribe(
+    this.sockServer.getDBMessages(this.channel_name).subscribe(
       data => { messages_to_add = data },
       err => console.error(err),
       () => {
-        console.log(messages_to_add + ": This line :" + sessionStorage.getItem("chat_channel"));
+        console.log(messages_to_add + ": This line :" + this.channel_name);
         if (messages_to_add !== null) {
           console.log(messages_to_add["messages"]);
 
@@ -51,7 +51,7 @@ export class ChatComponent implements OnInit {
     );
 
     this.connection = this.sockServer.getMessage().subscribe(message=>{
-      if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
+      if (message["text"][1] == this.channel_name) {
         this.messages.push(message["text"][0]);
       }
       this.message = '';
@@ -64,7 +64,7 @@ export class ChatComponent implements OnInit {
   */
   sendMessage(){
     let data = '[' + this.username + ']' + this.message;
-    this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), data);
+    this.sockServer.sendMessage(this.channel_name, data);
   }
 
   /*
@@ -73,7 +73,7 @@ export class ChatComponent implements OnInit {
   */
   ngOnDestroy(){
     if (this.connection) {
-      // this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " left the chat.");
+      this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " left the chat.");
       this.connection.unsubscribe();
     }
   }
