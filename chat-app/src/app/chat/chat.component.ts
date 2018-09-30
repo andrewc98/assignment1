@@ -26,21 +26,17 @@ export class ChatComponent implements OnInit {
       this.router.navigateByUrl("home");
     }
     this.username = sessionStorage.getItem("username");
+    this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " joined the chat.");
 
-    if (this.messages.length == 0) {
+    if (this.messages.length == -1) {
       var messages_to_add;
       this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel")).subscribe(
         data => { messages_to_add = data },
         err => console.error(err),
-        () => appendChat(messages_to_add, this.sockServer, this.messages)
+        () => console.log(messages_to_add)
       );
-    } else {
-      
-    }
 
-    function appendChat(messages_to_add, sockServer, messages) {
       console.log(messages_to_add + ": This line");
-      console.log(messages_to_add);
 
       if (messages_to_add !== undefined) {
         console.log(messages_to_add["messages"]);
@@ -49,11 +45,8 @@ export class ChatComponent implements OnInit {
           this.messages.push(mess);
         });
       }
-      this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " joined the chat.");
-      connectChat();
-    }
-
-    function connectChat() {
+    } else {
+      console.log("A");
       this.connection = this.sockServer.getMessage().subscribe(message=>{
         if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
           this.messages.push(message["text"][0]);
