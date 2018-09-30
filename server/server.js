@@ -37,26 +37,26 @@ app.get('/manage_users', function(req,res){
 
 require('./routes.js')(app, path);
 io.on('connection', (socket)=>{
-    // socket.join("", () => {
-
-    // });
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
-    socket.on('add-message', (channel, message)=>{
+    socket.on('add-message', (message, channel)=>{
+
+        io.emit('message', {type:'message', text: [message, channel]});
 
         MongoClient.connect(url, {poolSize:10}, function(err, db) {
             if (err) { return console.log(err) }
             const dbName = 'mydb';
             var database = db.db(dbName);
-            
-            database.collection("chat").updateOne( { name: channel }, { $addToSet: { messages: message } }, { upsert: true }, function(err, result) {
+
+            database.collection("chat").updateOne( { name: channel }, { $push: { messages: message } }, { upsert: true }, function(err, result) {
+                console.log("Add a message to chat db");
                 if (err) { return console.log(err) }
             });
 
+            let items = database.collection("chat").find({});
+            console.log(items[0]);
         });
-        
-        io.emit('message', {type:'message', text: [message, channel]});
     });
 });
 require('./listen.js')(http);

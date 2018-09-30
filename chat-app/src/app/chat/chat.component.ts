@@ -30,11 +30,13 @@ export class ChatComponent implements OnInit {
     if (this.messages.length == 0) {
       var messages_to_add;
       this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel")).subscribe(
-        data => { messages_to_add = data["messages"] },
+        data => { messages_to_add = data },
         err => console.error(err),
         () => console.log('Found Chat')
       );
-      console.log(messages_to_add);
+
+      console.log(messages_to_add + ": This line");
+
       if (messages_to_add !== undefined) {
         messages_to_add.forEach(mess => {
           this.messages.push(mess);
@@ -42,8 +44,8 @@ export class ChatComponent implements OnInit {
       }
     }
     this.connection = this.sockServer.getMessage().subscribe(message=>{
-      if (message["text"][0] == sessionStorage.getItem("chat_channel")) {
-        this.messages.push(message["text"][1]);
+      if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
+        this.messages.push(message["text"][0]);
       }
       this.message = '';
     });
