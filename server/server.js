@@ -653,10 +653,10 @@ app.get('/api/chat', (req, res) => {
         const dbName = 'mydb';
         var database = db.db(dbName);
 
-        console.log("Chat.js");
+        console.log("Chat.js " + channel_name);
 
         // Find users
-        database.collection("chat").find({name: channel_name}).toArray(function(err, result) {
+        database.collection("chat").findOne({name: channel_name}, function(err, result) {
             if (err) { return console.log(err) }
             console.log("Added Message");
             res.send(result);

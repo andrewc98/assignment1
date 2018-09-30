@@ -32,23 +32,35 @@ export class ChatComponent implements OnInit {
       this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel")).subscribe(
         data => { messages_to_add = data },
         err => console.error(err),
-        () => console.log('Found Chat')
+        () => appendChat(messages_to_add, this.sockServer, this.messages)
       );
+    } else {
+      
+    }
 
+    function appendChat(messages_to_add, sockServer, messages) {
       console.log(messages_to_add + ": This line");
+      console.log(messages_to_add);
 
       if (messages_to_add !== undefined) {
-        messages_to_add.forEach(mess => {
+        console.log(messages_to_add["messages"]);
+        messages_to_add["messages"].forEach(mess => {
+          console.log(mess);
           this.messages.push(mess);
         });
       }
+      this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " joined the chat.");
+      connectChat();
     }
-    this.connection = this.sockServer.getMessage().subscribe(message=>{
-      if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
-        this.messages.push(message["text"][0]);
-      }
-      this.message = '';
-    });
+
+    function connectChat() {
+      this.connection = this.sockServer.getMessage().subscribe(message=>{
+        if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
+          this.messages.push(message["text"][0]);
+        }
+        this.message = '';
+      });
+    }
   }
 
   /*
