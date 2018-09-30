@@ -35,14 +35,11 @@ app.get('/manage_users', function(req,res){
 });
 // --- Allow connection to the angular app End
 
-var groupsJSON = [];
-var channelsJSON = [];
-var usersJSON = [];
-
 require('./routes.js')(app, path);
-// require('./socket.js')(app, io);
 io.on('connection', (socket)=>{
-    console.log('user connected');
+    socket.join("", () => {
+
+    });
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
@@ -51,10 +48,6 @@ io.on('connection', (socket)=>{
     });
 });
 require('./listen.js')(http);
-
-var groups = require('./data/groups.json');
-var channels = require('./data/channels.json');
-var users = require('./data/users.json');
 
 // --- App get for dashboard End
 /*

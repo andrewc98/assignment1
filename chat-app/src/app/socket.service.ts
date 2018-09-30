@@ -26,8 +26,7 @@ export class SocketService {
     Description --- This will recieve messages from the socket.
   */
   getMessage () {
-        this.socket = io(this.url);
-    
+    this.socket = io(this.url);    
     console.log('getMessages');
     let observable = new Observable(observer => {
       this.socket.on('message', (data)=>{
@@ -37,6 +36,6 @@ export class SocketService {
         }
       });
     });
-  return observable;
+    return observable;
   }
 }

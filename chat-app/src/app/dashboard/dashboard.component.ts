@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
     Description --- This just navigates to chat until assignment 2.
   */
   navigateChat(channel) {
+    sessionStorage.setItem("chat_channel", channel.name);
     this.router.navigateByUrl("chat");
   }
 }
