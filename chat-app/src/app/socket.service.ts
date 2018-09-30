@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as io from 'socket.io-client';
 
 @Injectable({
@@ -9,7 +10,7 @@ import * as io from 'socket.io-client';
 export class SocketService {
   private url = 'http://localhost:3000';
   private socket;
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
 
   /*
@@ -37,5 +38,9 @@ export class SocketService {
       });
     });
     return observable;
+  }
+
+  getDBMessages (channel) {
+    return this.http.get('http://localhost:3000/api/chat', {params: {name: channel}});
   }
 }

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class ChatComponent implements OnInit {
 
   username: String;
-  messages = []
+  messages = [];
   message;
   connection
   constructor(private sockServer: SocketService, private router:Router) { }
@@ -24,10 +24,18 @@ export class ChatComponent implements OnInit {
     if(!sessionStorage.getItem("username")){
       console.log("there is no username");
       this.router.navigateByUrl("home");
-    } else {
-      this.username = sessionStorage.getItem("username");
     }
 
+    if (this.messages.length == 0) {
+      console.log("Here!");
+      this.messages = this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel"))["messages"];
+      console.log(this.messages);
+      if (this.messages === undefined) {
+        this.messages = [];
+      }
+    }
+
+    this.username = sessionStorage.getItem("username");
     this.connection = this.sockServer.getMessage().subscribe(message=>{
       if (message["text"][0] == sessionStorage.getItem("chat_channel")) {
         this.messages.push(message["text"][1]);

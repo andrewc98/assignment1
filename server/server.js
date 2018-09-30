@@ -44,6 +44,19 @@ io.on('connection', (socket)=>{
         console.log('user disconnected');
     });
     socket.on('add-message', (channel, message)=>{
+
+        MongoClient.connect(url, {poolSize:10}, function(err, db) {
+            if (err) { return console.log(err) }
+            const dbName = 'mydb';
+            var database = db.db(dbName);
+            
+            database.collection("chat").updateOne( { name: channel }, { $addToSet: { messages: message } }, { upsert: true }, function(err, result) {
+                if (err) { return console.log(err) }
+                console.log(result);
+            });
+
+        });
+        
         io.emit('message', {type:'message', text: [message, channel]});
     });
 });
@@ -630,3 +643,24 @@ app.delete('/api/users/:user_name', function (req, res) {
     });
 });
 // --- App get for users End
+
+// --- App get for chat
+app.get('/api/chat', (req, res) => {
+    MongoClient.connect(url, {poolSize:10}, function(err, db) {
+        let channel_name = req.query.name;
+        if (err) { return console.log(err) }    
+        const dbName = 'mydb';
+        var database = db.db(dbName);
+
+        console.log("Chat.js");
+
+        // Find users
+        database.collection("chat").find({name: channel_name}).toArray(function(err, result) {
+            if (err) { return console.log(err) }
+            console.log(result);
+            res.send(result);
+        });
+        // Find users
+    });
+});
+// --- App get for chat
