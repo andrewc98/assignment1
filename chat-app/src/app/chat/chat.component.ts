@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class ChatComponent implements OnInit {
 
   username: String;
+  channel_name = sessionStorage.getItem("chat_channel");
   messages = [];
   message;
   connection
@@ -36,8 +37,11 @@ export class ChatComponent implements OnInit {
       err => console.error(err),
       () => {
         console.log(messages_to_add + ": This line :" + sessionStorage.getItem("chat_channel"));
-        if (messages_to_add !== undefined) {
+        if (messages_to_add !== null) {
           console.log(messages_to_add["messages"]);
+
+
+
           messages_to_add["messages"].forEach(mess => {
             console.log(mess);
             this.messages.push(mess);
@@ -46,14 +50,12 @@ export class ChatComponent implements OnInit {
       }
     );
 
-
     this.connection = this.sockServer.getMessage().subscribe(message=>{
       if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
         this.messages.push(message["text"][0]);
       }
       this.message = '';
     });
-
   }
 
   /*

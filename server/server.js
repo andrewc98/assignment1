@@ -93,8 +93,9 @@ app.get('/api/dash', (req, res) => {
                     }
                 });
                 if (group.users && (channels_user_in.length > 0 || group.users.indexOf(req.query.name)) != -1) {
+                    console.log(group.name);
                     groups_to_return.push({
-                        group_name: group.name,
+                        name: group.name,
                         channels: channels_user_in
                     });
                 }
