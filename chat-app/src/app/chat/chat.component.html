@@ -5,7 +5,7 @@
     <div class="card-body">
       <div id="chat_history" style="height:500px">
         <div *ngFor="let message of messages">
-          {{message.text}}
+          {{message}}
         </div>
       </div>
       <input [(ngModel)]="message" type="text" placeholder="message" name="message" id="message" class="form-control">

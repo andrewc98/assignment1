@@ -16,9 +16,9 @@ export class SocketService {
     Author -------- Andrew Campbell
     Description --- This function will send a message through the socket.
   */
-  sendMessage (message) {
+  sendMessage (channel, message) {
     console.log('sendMessage(' + message + ')');
-    this.socket.emit('add-message', message);
+    this.socket.emit('add-message', message, channel);
   }
 
   /*

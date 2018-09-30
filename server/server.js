@@ -43,8 +43,8 @@ io.on('connection', (socket)=>{
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
-    socket.on('add-message', (message)=>{
-        io.emit('message', {type:'message', text: message});
+    socket.on('add-message', (channel, message)=>{
+        io.emit('message', {type:'message', text: [message, channel]});
     });
 });
 require('./listen.js')(http);
