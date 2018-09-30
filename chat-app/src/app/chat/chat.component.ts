@@ -25,17 +25,22 @@ export class ChatComponent implements OnInit {
       console.log("there is no username");
       this.router.navigateByUrl("home");
     }
+    this.username = sessionStorage.getItem("username");
 
     if (this.messages.length == 0) {
-      console.log("Here!");
-      this.messages = this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel"))["messages"];
-      console.log(this.messages);
-      if (this.messages === undefined) {
-        this.messages = [];
+      var messages_to_add;
+      this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel")).subscribe(
+        data => { messages_to_add = data["messages"] },
+        err => console.error(err),
+        () => console.log('Found Chat')
+      );
+      console.log(messages_to_add);
+      if (messages_to_add !== undefined) {
+        messages_to_add.forEach(mess => {
+          this.messages.push(mess);
+        });
       }
     }
-
-    this.username = sessionStorage.getItem("username");
     this.connection = this.sockServer.getMessage().subscribe(message=>{
       if (message["text"][0] == sessionStorage.getItem("chat_channel")) {
         this.messages.push(message["text"][1]);

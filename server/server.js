@@ -52,7 +52,6 @@ io.on('connection', (socket)=>{
             
             database.collection("chat").updateOne( { name: channel }, { $addToSet: { messages: message } }, { upsert: true }, function(err, result) {
                 if (err) { return console.log(err) }
-                console.log(result);
             });
 
         });
@@ -69,6 +68,7 @@ require('./listen.js')(http);
     Description --- This function collects all of the content to be displayed for a user. Anything else is not displayed on the dashboard.
 */
 app.get('/api/dash', (req, res) => {
+    console.log("/api/dash");
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         if (err) { return console.log(err) }    
         const dbName = 'mydb';
@@ -646,9 +646,10 @@ app.delete('/api/users/:user_name', function (req, res) {
 
 // --- App get for chat
 app.get('/api/chat', (req, res) => {
+    console.log("/api/chat");
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         let channel_name = req.query.name;
-        if (err) { return console.log(err) }    
+        if (err) { return console.log(err) }
         const dbName = 'mydb';
         var database = db.db(dbName);
 
@@ -657,7 +658,7 @@ app.get('/api/chat', (req, res) => {
         // Find users
         database.collection("chat").find({name: channel_name}).toArray(function(err, result) {
             if (err) { return console.log(err) }
-            console.log(result);
+            console.log("Added Message");
             res.send(result);
         });
         // Find users

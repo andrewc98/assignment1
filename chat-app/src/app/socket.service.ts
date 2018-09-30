@@ -3,14 +3,19 @@ import { Observable, observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as io from 'socket.io-client';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class SocketService {
+
+  constructor(private http:HttpClient) { }
   private url = 'http://localhost:3000';
   private socket;
-  constructor(private http:HttpClient) { }
 
 
   /*
@@ -18,6 +23,7 @@ export class SocketService {
     Description --- This function will send a message through the socket.
   */
   sendMessage (channel, message) {
+    this.socket = io(this.url);    
     console.log('sendMessage(' + message + ')');
     this.socket.emit('add-message', message, channel);
   }
@@ -40,7 +46,8 @@ export class SocketService {
     return observable;
   }
 
-  getDBMessages (channel) {
-    return this.http.get('http://localhost:3000/api/chat', {params: {name: channel}});
+  getDBMessages(channel) {
+    console.log("getDBMessages");
+    return this.http.get('http://localhost:3000/api/chat/', {params: {name: channel}});
   }
 }
