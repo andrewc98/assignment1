@@ -28,7 +28,6 @@ export class ChatComponent implements OnInit {
     }
 
     this.username = sessionStorage.getItem("username");
-    this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " joined the chat.");
 
     var messages_to_add;
 
@@ -39,14 +38,12 @@ export class ChatComponent implements OnInit {
         console.log(messages_to_add + ": This line :" + this.channel_name);
         if (messages_to_add !== null) {
           console.log(messages_to_add["messages"]);
-
-
-
           messages_to_add["messages"].forEach(mess => {
             console.log(mess);
             this.messages.push(mess);
           });
         }
+        this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " joined the chat.");
       }
     );
 
@@ -63,7 +60,7 @@ export class ChatComponent implements OnInit {
     Description --- This function is used to send a message through the socket.
   */
   sendMessage(){
-    let data = '[' + this.username + ']' + this.message;
+    let data = '[' + this.username + '] ' + this.message;
     this.sockServer.sendMessage(this.channel_name, data);
   }
 

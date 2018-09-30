@@ -394,14 +394,33 @@ app.put('/api/channels/:id', function (req, res) {
             if (channel.users.find(x => x.name == user.name) === undefined) {
                 console.log(channel);
                 // Find users
-                var new_users = channel.users;
+                var new_users = channel.users.filter(x => x != user.name);
                 new_users.push(user.name);
                 database.collection("channels").updateOne({ name: channel.name }, { $set: {users: new_users} }, function(err, result) {
                     if (err) { return console.log(err) }
-                    returnChannels();
+                    addUserToGroupChannel();
                 });
                 // Find users
             }
+        }
+
+        function addUserToGroupChannel() {
+            database.collection("groups").find({}, function(err, results) {
+                if (err) { return console.log(err) }
+                results.forEach(group => {
+                    var group_channels = group.channels;
+                    group_channels.forEach(channel => {
+                        if (channel.name == channel_name) {
+                            channel.users = channel.users.filter(x => x != user_name);
+                            channel.users.push(user_name);
+                            database.collection("groups").updateOne({name: group.name}, {}, function (err, returns) {
+                                
+                            });
+                        }
+                    });
+                });
+                returnChannels();
+            });
         }
 
         function returnChannels() {
@@ -428,13 +447,31 @@ app.delete('/api/channels/:channel_name', function (req, res) {
         const dbName = 'mydb';
         var database = db.db(dbName);
 
-        // Add the user to the DB
+        // Delete a channel
         database.collection("channels").deleteOne({name: channel_name}, function(err, results) {
             if (err) { return console.log(err) }
             console.log("Deleted: " + channel_name);
             res.send(results);
-            db.close();
         });
+        // Delete a channel
+
+        // Delete a channel
+        database.collection("groups").find({}, function(err, results) {
+            if (err) { return console.log(err) }
+            results.forEach(group => {
+                deleteChannelFromGroup(group);
+            });
+        });
+        function deleteChannelFromGroup(group) {
+            group.channels.forEach(channel => {
+                if (channel.name == channel_name) {
+                    database.collection("groups").updateOne({name: group.name}, {$pull: { channels: channel } }, function(err, results) {
+                        if (err) { return console.log(err) }
+                    });
+                }
+            });
+        }
+        // Delete a channel
     });
 });
 // --- App get for channels End
@@ -503,10 +540,10 @@ app.put('/api/users/:user_name', function (req, res) {
     MongoClient.connect(url, {poolSize:10}, function(err, db) {
         if (err) { return console.log(err) }
         const dbName = 'mydb';
-        var users = db.db(dbName);
+        var database = db.db(dbName);
 
         // Find users
-        users.collection("users").updateOne({ name: user_name }, { $set: {access_level: updated_level} }, function(err, result) {
+        database.collection("users").updateOne({ name: user_name }, { $set: {access_level: updated_level} }, function(err, result) {
             if (err) { return console.log(err) }
             res.send(result);
         });
