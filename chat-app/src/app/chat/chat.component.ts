@@ -25,35 +25,35 @@ export class ChatComponent implements OnInit {
       console.log("there is no username");
       this.router.navigateByUrl("home");
     }
+
     this.username = sessionStorage.getItem("username");
     this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " joined the chat.");
 
-    if (this.messages.length == -1) {
-      var messages_to_add;
-      this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel")).subscribe(
-        data => { messages_to_add = data },
-        err => console.error(err),
-        () => console.log(messages_to_add)
-      );
+    var messages_to_add;
 
-      console.log(messages_to_add + ": This line");
-
-      if (messages_to_add !== undefined) {
-        console.log(messages_to_add["messages"]);
-        messages_to_add["messages"].forEach(mess => {
-          console.log(mess);
-          this.messages.push(mess);
-        });
-      }
-    } else {
-      console.log("A");
-      this.connection = this.sockServer.getMessage().subscribe(message=>{
-        if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
-          this.messages.push(message["text"][0]);
+    this.sockServer.getDBMessages(sessionStorage.getItem("chat_channel")).subscribe(
+      data => { messages_to_add = data },
+      err => console.error(err),
+      () => {
+        console.log(messages_to_add + ": This line :" + sessionStorage.getItem("chat_channel"));
+        if (messages_to_add !== undefined) {
+          console.log(messages_to_add["messages"]);
+          messages_to_add["messages"].forEach(mess => {
+            console.log(mess);
+            this.messages.push(mess);
+          });
         }
-        this.message = '';
-      });
-    }
+      }
+    );
+
+
+    this.connection = this.sockServer.getMessage().subscribe(message=>{
+      if (message["text"][1] == sessionStorage.getItem("chat_channel")) {
+        this.messages.push(message["text"][0]);
+      }
+      this.message = '';
+    });
+
   }
 
   /*
@@ -71,6 +71,7 @@ export class ChatComponent implements OnInit {
   */
   ngOnDestroy(){
     if (this.connection) {
+      // this.sockServer.sendMessage(sessionStorage.getItem("chat_channel"), sessionStorage.getItem("username") + " left the chat.");
       this.connection.unsubscribe();
     }
   }
