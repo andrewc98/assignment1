@@ -3,7 +3,7 @@ The git repository maintains the same structure as was seen in assignment 1, jus
 
 ## Data Structures
 #### User
-```javascript
+```js
 {
     name: "Andrew",
     password: "123456789",
@@ -14,7 +14,7 @@ The git repository maintains the same structure as was seen in assignment 1, jus
 This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds four attributes, name, password, and email. To login, a person my input a matching set of "name" and "username". The "access_level" denotes what permissions the user has been given. With 1 being a normal user, 2 is a group admin, and 3 is a super admin.
 
 #### Channel
-```javascript
+```js
 {
     name: "Tennis",
     users: [ "Roger", "Novak", "Rafael" ]
@@ -23,7 +23,7 @@ This is an example of the structure of one of my user objects. It should also be
 This type of data stucture is used to store channels. The name of the channel is stored in the "name" attribute. The users had only their name stored in an array in the "users" attribute.
 
 #### Group
-```javascript
+```js
 {
     name: "Sport",
     channels: [ { name: "Tennis", users: [ "Roger", "Novak", "Rafael" ] }, { name: "Rubgy League", users: [ "Johnathan", "Billy", "Ben" ] } ],
@@ -33,7 +33,7 @@ This type of data stucture is used to store channels. The name of the channel is
 Groups has a more detailed way of storing data. The name of the group and the users added to it are stored in "name" and "users", repspectively, but channels stores an instance of a channel. Doing it this way makes it difficult to perform actions on channels, because there are two places to store it, but it ultimately works out.
 
 #### Chat
-```javascript
+```js
 {
     name: "Tennis",
     messages: ["Andrew joined the chat", "[Andrew] Hi and Bye", "Andrew left the chat"]
@@ -71,9 +71,13 @@ The above line of code is very similar to post, but it has an extension on the e
 #### Delete
 Delete is promopted similarly to Put:
 ```ts
-return this.http.delete('http://localhost:3000/api/channels/' + name);
+return this.http.delete('http://localhost:3000/api/[Table]/' + name);
 ```
 Delete will find the record to delete, and remove it from the MongoDB. Delete will also return a new set of records, which is the same records as before, without the removed record.
 
 ## Angular Architecture
-Each component in this Angular app has an associated service, this is to allow a separation between the HttpClient and the component. Furthermore, functions of a service being called by another function allows a buffer zone of sorts. Before data makes it to the HttpClient to be sent the node server, it can be manipulated in a way to ensure that it is of correct format. For instance, the ability to stop a user from deleting themselves. Before data is sent to the HttpClient, the Angular component will first ensure that user they want to delete, is not equal to the one logged in at the current time. The model of data is stored in the JSON file, anything that goes in or comes out of the JSON files is strictly enforced to be of one format. The components access the services, the services access the model.
+The angular architecture remains largely the same as the first assignment with Components and Services performing most of the functionality. All services are performing essentially the same thing, calling the Node server. Such as:
+```ts
+return this.http.delete('http://localhost:3000/api/[Table]/' + name);
+```
+Upon reaching a service, the data will already be formatted and ready to reach the node server. All of the manipulation of the data is performed in the component. This is done to prevent unneccersarly large data from being sent through the server.
