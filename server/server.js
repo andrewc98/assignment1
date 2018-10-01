@@ -9,6 +9,9 @@ const cors = require('cors')
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/mydb';
 
+var result = null;
+var success = false;
+
 var corsOptions = {
   origin: 'http://localhost:4200',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
