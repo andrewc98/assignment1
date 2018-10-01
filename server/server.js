@@ -39,6 +39,13 @@ app.get('/manage_users', function(req,res){
 // --- Allow connection to the angular app End
 
 require('./routes.js')(app, path);
+
+
+/*
+    Author -------- Andrew Campbell
+    Date ---------- 01/10/2018
+    Description --- This handle the adding and recieving of socket.io messages.
+*/
 io.on('connection', (socket)=>{
     socket.on('disconnect', function(){
         console.log('user disconnected');
