@@ -27,6 +27,17 @@ function removeChannelFromGroup(channel, group) {
 }
 // Channel Tests
 
+// Group Tests
+function addUserToGroup(group, user) {
+    group.user.push(user);
+    return group
+}
+function removeUserFromGroup(group, user) {
+    group.user.filter(x => x.name != user.name);
+    return group
+}
+// Group Tests
+
 
 // --- Functions for testing
 
@@ -94,35 +105,34 @@ describe("Channel Tests", function(){
 
     });
 });
-describe("Channel Tests", function(){
+describe("Group Tests", function(){
     /*
         Author -------- Andrew Campbell
         Date ---------- 1/10/2018
-        Description --- This test will check if channels can be added to groups
+        Description --- This test will check if users can be added to groups
     */
     it("Successful Adding", function () {
 
-        var group = { name: 'Sport', channels: [], users: [ 'Joe' ] }
-        var channel = { name: 'Tennis', users: [ 'Joe' ] }
+        var user = { name: "Joe", password: "1234", email: "JoeB@hotmail.com" }
+        var group = { name: 'Sport', channels: [], users: [ ] }
 
         setTimeout(function() {
-            assert.equal(addChannelToGroup(group, channel).channels, [ channel ]);
+            assert.equal(addUserToGroup(group, user).users, [ 'Joe' ]);
         }, 5000);
 
     });
     /*
         Author -------- Andrew Campbell
         Date ---------- 1/10/2018
-        Description --- This test will check if channels can be added to groups
+        Description --- This test will check if users can be removed from groups
     */
-    it("Successful Removal", function () {
+    it("Successful Adding", function () {
 
-        var group = { name: 'Sport', channels: [], users: [ 'Joe' ] }
-        var channel = { name: 'Tennis', users: [ 'Joe' ] }
         var user = { name: "Joe", password: "1234", email: "JoeB@hotmail.com" }
+        var group = { name: 'Sport', channels: [], users: [ 'Joe' ] }
 
         setTimeout(function() {
-            assert.equal(removeChannelFromGroup(group, channel).channels, [ ]);
+            assert.equal(removeUserFromGroup(group, user).users, [ ]);
         }, 5000);
 
     });
