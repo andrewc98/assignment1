@@ -1,21 +1,38 @@
 ## Git
-The git repository maintains the same structure as was seen in assignment 1, just the singular master branch. Unlike last time, no attempts at branching were made, which resulted in not encountering any branching issues. A straight forward singular branch ensured that when I did encounter a problem, I was able to reverse back to before the problem was created
+The git repository maintains the same structure as was seen in assignment 1, just the singular master branch. Unlike last time, no attempts at branching were made, which resulted in not encountering any branching issues. A straight forward singular branch ensured that when I did encounter a problem, I was able to reverse back to before the problem was created. This form of version control has worked successfully in the previous assessment, and continued to in this current one. Furthermore, this assignment was completed by me alone, so there was less of a need to implement branches.
 
 ## Data Structures
 #### User
 {
     name: "Andrew",
     password: "123456789",
-    email: "me@hotmail.com",
+    access_level: 1,
+    email: "me@hotmail.com"
 }
-This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds three attributes, name, password, and email. To login, a person my input a matching set of "name" and "username".
+This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds four attributes, name, password, and email. To login, a person my input a matching set of "name" and "username". The "access_level" denotes what permissions the user has been given. With 1 being a normal user, 2 is a group admin, and 3 is a super admin.
+
 #### Channel
 {
-    name: "Andrew",
-    password: "123456789",
-    email: "me@hotmail.com",
+    name: "Tennis",
+    users: [ "Roger", "Novak", "Rafael" ]
 }
-This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds three attributes, name, password, and email. To login, a person my input a matching set of "name" and "username".
+This type of data stucture is used to store channels. The name of the channel is stored in the "name" attribute. The users had only their name stored in an array in the "users" attribute.
+
+#### Group
+{
+    name: "Sport",
+    channels: [ { name: "Tennis", users: [ "Roger", "Novak", "Rafael" ] }, { name: "Rubgy League", users: [ "Johnathan", "Billy", "Ben" ] } ],
+    users: [ "Roger", "Novak", "Rafael", "Johnathan", "Billy", "Ben" ]
+}
+Groups has a more detailed way of storing data. The name of the group and the users added to it are stored in "name" and "users", repspectively, but channels stores an instance of a channel. Doing it this way makes it difficult to perform actions on channels, because there are two places to store it, but it ultimately works out.
+
+#### Chat
+{
+    name: "Tennis",
+    messages: ["Andrew joined the chat", "[Andrew] Hi and Bye", "Andrew left the chat"]
+}
+Each record in chat stores the name of the channel the chat appears in, and the messages are held in an array under the "messages" attribute. Messages are appended in order of arrival, so it's guarentee that the messages will always be in the correct order.
+
 
 ## REST API
 #### Get
