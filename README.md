@@ -3,34 +3,42 @@ The git repository maintains the same structure as was seen in assignment 1, jus
 
 ## Data Structures
 #### User
-```javascript{
+```javascript
+{
     name: "Andrew",
     password: "123456789",
     access_level: 1,
     email: "me@hotmail.com"
-}```
+}
+```
 This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds four attributes, name, password, and email. To login, a person my input a matching set of "name" and "username". The "access_level" denotes what permissions the user has been given. With 1 being a normal user, 2 is a group admin, and 3 is a super admin.
 
 #### Channel
-```javascript{
+```javascript
+{
     name: "Tennis",
     users: [ "Roger", "Novak", "Rafael" ]
-}```
+}
+```
 This type of data stucture is used to store channels. The name of the channel is stored in the "name" attribute. The users had only their name stored in an array in the "users" attribute.
 
 #### Group
-```javascript{
+```javascript
+{
     name: "Sport",
     channels: [ { name: "Tennis", users: [ "Roger", "Novak", "Rafael" ] }, { name: "Rubgy League", users: [ "Johnathan", "Billy", "Ben" ] } ],
     users: [ "Roger", "Novak", "Rafael", "Johnathan", "Billy", "Ben" ]
-}```
+}
+```
 Groups has a more detailed way of storing data. The name of the group and the users added to it are stored in "name" and "users", repspectively, but channels stores an instance of a channel. Doing it this way makes it difficult to perform actions on channels, because there are two places to store it, but it ultimately works out.
 
 #### Chat
-```javascript{
+```javascript
+{
     name: "Tennis",
     messages: ["Andrew joined the chat", "[Andrew] Hi and Bye", "Andrew left the chat"]
-}```
+}
+```
 Each record in chat stores the name of the channel the chat appears in, and the messages are held in an array under the "messages" attribute. Messages are appended in order of arrival, so it's guarentee that the messages will always be in the correct order.
 
 
