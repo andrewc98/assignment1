@@ -1,21 +1,33 @@
 ## Git
-The git repository uses a simple architecture, of just the one master branch. Throughout the completion of this assessment, branching was used to test another feature and move back a few commits. A problem arose when git encountered conflict issues that proved difficult to fix. Evidence of this problem can be seen in the commit entitled ‘Removed Conflict’. Which took, the better part of three hours to fix. After the sour encounter with branching, my position on just using one basic branch was confirmed. Furthermore, this assignment was done alone, so there was no need to create branching strategies with other people.
+The git repository maintains the same structure as was seen in assignment 1, just the singular master branch. Unlike last time, no attempts at branching were made, which resulted in not encountering any branching issues. A straight forward singular branch ensured that when I did encounter a problem, I was able to reverse back to before the problem was created
 
 ## Data Structures
-Users, channels, and groups are stored in an unusual way. Due to the fact that this assignment uses JSON serialisation, instead of a database, connections between the data had to be made another way. The solution was to store dumbed down smaller versions of the different data structures in their _parent_ items. For example, the data structure of a group contains a field for channels, and the channels contains a field for users. This way of storing data is not totally efficient, but for the purposes of this application it works fine. Another possible way considered to store data was to create connections of their own datatype, like a many-to-many relationship in a database. This was chosen against due to the time and skill involved in its implementation.
-The data of user does have an unusual attribute in it though, that is not present when stored in other _parent_ objects. This attribute is access level, which is a one to three rating, where one is a normal user, two is a group admin, and three is a super admin.
+#### User
+{
+    name: "Andrew",
+    password: "123456789",
+    email: "me@hotmail.com",
+}
+This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds three attributes, name, password, and email. To login, a person my input a matching set of "name" and "username".
+#### Channel
+{
+    name: "Andrew",
+    password: "123456789",
+    email: "me@hotmail.com",
+}
+This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds three attributes, name, password, and email. To login, a person my input a matching set of "name" and "username".
 
 ## REST API
-##### Get
+#### Get
 The REST API is done by the use of the use of the HttpClient, which includes four routes, which were used multiple times. To call the Node server and receive the users JSON file, a URL of ”http://localhost:3000/api/users” has to be hit, with the “get” function. The Node server is constantly watching the 3000 port on that URL for a hit. Once that URL is hit, it will parse back the user JSON file, no parameters are needed for this route. However, the dashboard, which displays only the groups the user is in does take parameters. It takes the parameters of the user’s name and their access level. It uses the username to determine which groups and channels the user has been included in, which it will return back. The benefit of doing it this way, rather than filtering the data on the Angular side is to prevent any data that the user doesn’t need from being returned. Data can be displayed like normal on the Angular side because it’s the correct data.
 
-##### Post
+#### Post
 Post function is called in a way much the same as the get method, but the URL "http://localhost:3000/api/users/". Unlike the get function, creating a user’s post must be parsed a parameter of the user to add. The user object is sent to the Node backend and compared with everything else in the data. If the user already exists, then they cannot add that user, so nothing will happen. Alternatively, if the user is unique and can be added, they will be added to the database and the client’s page will be updated seamlessly. The next function to use is the put function.
 
-##### Put
+#### Put
 The put function is used to update an existing object, and it’s called in a much different way to get and post. The URL of "http://localhost:3000/api/users/:user_name" must be called, where the username is equal to the username of the user who will be changed. Additionally, a body parameter is parsed through with it, the body contains the full details of the user to change, and the part to change to. The only allowed part to change of a user is the access level, which is the aforementioned rating of one to three. Like the previous functions, all of the calculations are done in the Node server. Lastly, the delete function.
 
-##### Delete
+#### Delete
 The delete function is also called in way similar to the put function. “http://localhost:3000/api/users/:user_name”, unlike the put function, delete does not need any other parameters to work with. All of the connections between the different objects in the model are calculated by the Node server, which it will then delete those connections, and the data with it. Allowing the Node server to do all of the heavy lifting allows the client to seamless transfer between different pages without the presence of any notable pauses.
 
 ## Angular Architecture
