@@ -62,7 +62,11 @@ app.put('/api/groups/:id', function (req, res) {
 This snippet of code ommits a lot of detail, but it is the stucture of what is performed on the node side. Node will call the MongoDB database and insert a record, then return the new array of records. As in all tables, if the record the user wishes to insert alread exists, it will not be added.
 
 #### Put
-The put function is used to update an existing object, and it’s called in a much different way to get and post. The URL of "http://localhost:3000/api/users/:user_name" must be called, where the username is equal to the username of the user who will be changed. Additionally, a body parameter is parsed through with it, the body contains the full details of the user to change, and the part to change to. The only allowed part to change of a user is the access level, which is the aforementioned rating of one to three. Like the previous functions, all of the calculations are done in the Node server. Lastly, the delete function.
+Put is very similar to Post, but instead of inserting a whole new record, an existing one is altered.
+```ts
+return this.http.put('http://localhost:3000/api/[Table]/' + data, body, httpOptions);
+```
+The above line of code is very similar to post, but it has an extension on the end of the route. This extension is used to identify what record needs modification. Body will contain the content that the user wishes to update to. The original record is obtained through the data variable. Lastly, deleteing.
 
 #### Delete
 The delete function is also called in way similar to the put function. “http://localhost:3000/api/users/:user_name”, unlike the put function, delete does not need any other parameters to work with. All of the connections between the different objects in the model are calculated by the Node server, which it will then delete those connections, and the data with it. Allowing the Node server to do all of the heavy lifting allows the client to seamless transfer between different pages without the presence of any notable pauses.
