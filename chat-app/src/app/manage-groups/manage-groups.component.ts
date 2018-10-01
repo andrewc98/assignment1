@@ -49,17 +49,19 @@ export class ManageGroupsComponent implements OnInit {
 
   /*
     Author -------- Andrew Campbell
-    Date ---------- 06/09/2018
+    Date ---------- 01/10/2018
     Description --- This function calls the groupService function to add a user or channel to the group.
   */
   addToGroup(channel_name, group, type) {
-    if (channel_name != "" && group && type) {
+    if (channel_name != "" && group && type && (group.admin.indexOf(sessionStorage.getItem("username")) != -1 || sessionStorage.getItem("access_level") == "3")) {
       console.log("addToGroup");
       this._groupService.addToGroup(channel_name, group, type).subscribe(
         data => { this.groups = data },
         err => console.error(err),
         () => console.log('Added To Group')
       )
+    } else {
+      alert("Sorry, you cannot do that")
     }
   }
 
@@ -72,7 +74,8 @@ export class ManageGroupsComponent implements OnInit {
     if (group_name) {
       let body = {
         group_name: group_name,
-        channels: []
+        channels: [],
+        admins: []
       }
       this._groupService.createGroups(body).subscribe(
         data => {

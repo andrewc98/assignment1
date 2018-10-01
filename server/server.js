@@ -158,7 +158,7 @@ app.post('/api/groups', function (req, res) {
         // Add the user to the DB
         function addGroup() {
             console.log("Add Group");
-            database.collection("groups").insertOne({name: group_name, channels: [], users: [] }, function(err, result) {
+            database.collection("groups").insertOne({name: group_name, channels: [], users: [], admin: [] }, function(err, result) {
                 console.log("Adding Group");
                 if (err) { return console.log(err) }
                 res.send(result);
@@ -207,6 +207,17 @@ app.put('/api/groups/:id', function (req, res) {
             if (group.users.find(x => x == channel_user_name) === undefined) {
                 console.log("Here!");
                 // Find users
+                if (type_name == 'admin') {
+                    console.log(type_name);
+                    var new_admin = group.admin;
+                    new_admin.push(channel_user_name)
+                    database.collection("groups").updateOne({ name: group.name }, { $set: {admin: new_admin} }, function(err, result) {
+                        if (err) { return console.log(err) }
+                        database.collection("users").updateOne({ name: channel_user_name, access_level: 1 }, { $set: {access_level: 2} }, function(err, result) {
+                            if (err) { return console.log(err) }
+                        });
+                    });
+                }
                 var new_users = group.users;
                 new_users.push(channel_user_name);
                 database.collection("groups").updateOne({ name: group.name }, { $set: {users: new_users} }, function(err, result) {
