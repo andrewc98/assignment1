@@ -71,7 +71,9 @@ export class ManageGroupsComponent implements OnInit {
     Description -- This function is used to create a new group.
   */
   createGroup(group_name){
-    if (group_name) {
+    let groups_name = this.groups.filter(x => x.name == group_name);
+    console.log(groups_name);
+    if (group_name && groups_name.length == 0) {
       let body = {
         group_name: group_name,
         channels: [],
@@ -87,6 +89,10 @@ export class ManageGroupsComponent implements OnInit {
           console.error('Unexpected error encountered creating group.');
         }
       )
+    } else if(groups_name.length != 0) {
+      alert("That group already exists.");
+    } else {
+      alert("Sorry, that input is bad");
     }
   }
 

@@ -3,6 +3,7 @@ import { UsersService } from '../users.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { AlertPromise } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-manage-user',
@@ -73,7 +74,8 @@ export class ManageUserComponent implements OnInit {
     Description -- This function will create a new user based on the input of the form.
   */
   createUser(name, email, password) {
-    if (name && email) {
+    let contains_name = this.users.filter(x => x.name == name);
+    if (name && email && password && contains_name.length == 0) {
       let body = {
         name: name,
         email: email,
@@ -88,6 +90,10 @@ export class ManageUserComponent implements OnInit {
           console.error(error);
         }
       )
+    } else if (contains_name.length != 0) {
+      alert("Sorry, that user already exists.");
+    } else {
+      alert("Sorry, that input is invalid.");
     }
   }
 

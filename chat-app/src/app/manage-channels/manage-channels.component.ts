@@ -86,7 +86,8 @@ export class ManageChannelsComponent implements OnInit {
     Description -- This function will login the user, and redirect them to chat, only if they are a registered user.
   */
   createChannel(channel_name){
-    if (channel_name) {
+    let contains_channels = this.channels.filter(x => x.name == channel_name);
+    if (channel_name && contains_channels.length == 0) {
       let body = {
         channel_name: channel_name,
         users: []
@@ -101,6 +102,10 @@ export class ManageChannelsComponent implements OnInit {
           console.error('Unexpected error encountered creating channel.');
         }
       )
+    } else if (contains_channels.length != 0) {
+      alert("Sorry, that channel already exists.");
+    } else {
+      alert("Sorry, that input is invalid.");
     }
   }
 }
