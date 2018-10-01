@@ -465,6 +465,9 @@ app.delete('/api/channels/:channel_name', function (req, res) {
         database.collection("channels").deleteOne({name: channel_name}, function(err, results) {
             if (err) { return console.log(err) }
             console.log("Deleted: " + channel_name);
+            database.collection("chat").deleteOne({name: channel_name}, function(err, results) {
+                if (err) { return console.log(err) }
+            });
             res.send(results);
         });
         // Delete a channel
