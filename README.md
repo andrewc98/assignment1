@@ -26,7 +26,7 @@ This type of data structure is used to store channels. The name of the channel i
 ```js
 {
     name: "Sport",
-    channels: [ { name: "Tennis", users: [ "Roger", "Novak", "Rafael" ] }, { name: "Rubgy League", users: [ "Johnathan", "Billy", "Ben" ] } ],
+    channels: [ { name: "Tennis", users: [ "Roger", "Novak", "Rafael" ] }, { name: "Rugby League", users: [ "Johnathan", "Billy", "Ben" ] } ],
     users: [ "Roger", "Novak", "Rafael", "Johnathan", "Billy", "Ben" ]
 }
 ```
@@ -66,21 +66,21 @@ Put is very similar to Post, but instead of inserting a whole new record, an exi
 ```ts
 return this.http.put('http://localhost:3000/api/[Table]/' + data, body, httpOptions);
 ```
-The above line of code is very similar to post, but it has an extension on the end of the route. This extension is used to identify what record needs modification. Body will contain the content that the user wishes to update to. The original record is obtained through the data variable. Lastly, deleting.
+The above line of code is very similar to post, but it has an extension on the end of the route. This extension is used to identify what record needs modification. Body will contain the content that the user wishes to update to. The original record is obtained through the data variable, and a new set of records is returned. Lastly, deleting.
 
 #### Delete
 Delete is prompted similarly to Put:
 ```ts
 return this.http.delete('http://localhost:3000/api/[Table]/' + name);
 ```
-Delete will find the record to delete, and remove it from the MongoDB. Delete will also return a new set of records, which is the same records as before, without the removed record.
+Delete will find the record to delete, and remove it from the MongoDB. Delete will also return a new set of records, which is the same records as before, without the removed record. Like the other routes, it will return the new set of records.
 
 ## Angular Architecture
 The angular architecture remains largely the same as the first assignment with Components and Services performing most of the functionality. All services are performing essentially the same thing, calling the Node server. Such as:
 ```ts
 return this.http.delete('http://localhost:3000/api/[Table]/' + name);
 ```
-Upon reaching a service, the data will already be formatted and ready to reach the node server. All of the manipulation of the data is performed in the component. This is done to prevent unnecessarily large data from being sent through the server. The model is stored in MongoDB, under four different tables, "groups", "channels", "users", and "chat".
+Upon reaching a service, the data will already be formatted and ready to reach the node server. All of the manipulation of the data is performed in the component. This is done to prevent unnecessarily large data from being sent through the server. The model is stored in MongoDB, under four different tables, "groups", "channels", "users", and "chat". There are many different routes in project as well, one for each page. Chat, Groups, Channels, Users, Login, and Dashboard all have separate routes that link to their respective pages.
 
 ## Tests
 1. Open a new terminal.
