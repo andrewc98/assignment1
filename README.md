@@ -3,7 +3,7 @@ The git repository maintains the same structure as was seen in assignment 1, jus
 
 ## Data Structures
 #### User
-```json
+```javascript
 {
     name: "Andrew",
     password: "123456789",
@@ -14,7 +14,7 @@ The git repository maintains the same structure as was seen in assignment 1, jus
 This is an example of the structure of one of my user objects. It should also be noted that there is also an attribute of "_id" for all objects, but that is automatically created by MongoDB and is not used in this project. The user object holds four attributes, name, password, and email. To login, a person my input a matching set of "name" and "username". The "access_level" denotes what permissions the user has been given. With 1 being a normal user, 2 is a group admin, and 3 is a super admin.
 
 #### Channel
-```json
+```javascript
 {
     name: "Tennis",
     users: [ "Roger", "Novak", "Rafael" ]
@@ -23,7 +23,7 @@ This is an example of the structure of one of my user objects. It should also be
 This type of data stucture is used to store channels. The name of the channel is stored in the "name" attribute. The users had only their name stored in an array in the "users" attribute.
 
 #### Group
-```json
+```javascript
 {
     name: "Sport",
     channels: [ { name: "Tennis", users: [ "Roger", "Novak", "Rafael" ] }, { name: "Rubgy League", users: [ "Johnathan", "Billy", "Ben" ] } ],
@@ -33,7 +33,7 @@ This type of data stucture is used to store channels. The name of the channel is
 Groups has a more detailed way of storing data. The name of the group and the users added to it are stored in "name" and "users", repspectively, but channels stores an instance of a channel. Doing it this way makes it difficult to perform actions on channels, because there are two places to store it, but it ultimately works out.
 
 #### Chat
-```json
+```javascript
 {
     name: "Tennis",
     messages: ["Andrew joined the chat", "[Andrew] Hi and Bye", "Andrew left the chat"]
@@ -47,7 +47,19 @@ Each record in chat stores the name of the channel the chat appears in, and the 
 The REST API is utalised by HttpClient and the routes it provides. The first route used was "Get". Get is typically used to initialy retrieve the content from the Database. Most Get calls are made when the user first visits the page, where it will perform a route of "http://localhost:3000/api/[Table]", where "[Table]" denotes the MongoDB table I want to retieve data from. Upon hitting that route, the Node server will scan the database and return all of the records. The exception to this is the dashboard, which will deciede which tables to return, depending on the permissions of the user.
 
 #### Post
-Post function is called in a way much the same as the get method, but the URL "http://localhost:3000/api/users/". Unlike the get function, creating a user’s post must be parsed a parameter of the user to add. The user object is sent to the Node backend and compared with everything else in the data. If the user already exists, then they cannot add that user, so nothing will happen. Alternatively, if the user is unique and can be added, they will be added to the database and the client’s page will be updated seamlessly. The next function to use is the put function.
+Post is used to insert new records. Post takes a similar route to Get, but also needs parameters.
+```typescript
+return this.http.post('http://localhost:3000/api/[Table]/', data, httpOptions);
+```
+Data indicates the content that Node will need to add a record to the database.
+```typescript
+app.put('/api/groups/:id', function (req, res) {
+    let data = req.params.data;
+    //Retireve content
+    res.send(data)
+});
+```
+This snippet of code ommits a lot of detail, but it is the stucture of what is performed on the node side. Node will call the MongoDB database and insert a record, then return the new array of records. As in all tables, if the record the user wishes to insert alread exists, it will not be added.
 
 #### Put
 The put function is used to update an existing object, and it’s called in a much different way to get and post. The URL of "http://localhost:3000/api/users/:user_name" must be called, where the username is equal to the username of the user who will be changed. Additionally, a body parameter is parsed through with it, the body contains the full details of the user to change, and the part to change to. The only allowed part to change of a user is the access level, which is the aforementioned rating of one to three. Like the previous functions, all of the calculations are done in the Node server. Lastly, the delete function.
