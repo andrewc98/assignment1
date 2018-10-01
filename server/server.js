@@ -664,6 +664,10 @@ app.delete('/api/users/:user_name', function (req, res) {
                 let new_users = group.users.filter(x => x != user_name)
                 database.collection("groups").updateOne({ name: group.name }, { $set: {users: new_users} }, function(err, result) {
                     if (err) { return console.log(err) }
+                    let new_admin = group.admin.filter(x => x != user_name)
+                    database.collection("groups").updateOne({ name: group.name }, { $set: {admin: new_admin} }, function(err, result) {
+                        if (err) { return console.log(err) }
+                    });
                     group.channels.forEach(channel => {
                         removeUserFromGroupChannel(group, channel);
                     });
