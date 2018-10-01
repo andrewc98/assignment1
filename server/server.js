@@ -398,28 +398,28 @@ app.put('/api/channels/:id', function (req, res) {
                 new_users.push(user.name);
                 database.collection("channels").updateOne({ name: channel.name }, { $set: {users: new_users} }, function(err, result) {
                     if (err) { return console.log(err) }
-                    addUserToGroupChannel();
+                    addUserToGroupChannel(channel, result);
                 });
                 // Find users
             }
         }
 
-        function addUserToGroupChannel() {
+        function addUserToGroupChannel(old_channel, new_channel) {
+            console.log("addUserToGroupChannel");
             database.collection("groups").find({}, function(err, results) {
-                if (err) { return console.log(err) }
                 results.forEach(group => {
-                    var group_channels = group.channels;
-                    group_channels.forEach(channel => {
-                        if (channel.name == channel_name) {
-                            channel.users = channel.users.filter(x => x != user_name);
-                            channel.users.push(user_name);
-                            database.collection("groups").updateOne({name: group.name}, {}, function (err, returns) {
-                                
-                            });
-                        }
-                    });
+                    if (group.channels != group.channels.filter(x => x.name != old_channel.name)) {
+
+                        var new_group_channels = group.channels.filter(x => x.name != old_channel.name);
+                        new_group_channels.push(new_channel);
+                        console.log(new_group_channels);
+
+                        database.collection("groups").updateOne({ name: group.name }, { $set: {channels: group.channels} }, function(err, result) {
+                            if (err) { return console.log(err) }
+                        });
+                    }
                 });
-                returnChannels();
+                returnChannels()
             });
         }
 
