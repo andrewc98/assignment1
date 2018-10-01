@@ -394,27 +394,27 @@ app.put('/api/channels/:id', function (req, res) {
             if (channel.users.find(x => x.name == user.name) === undefined) {
                 console.log(channel);
                 // Find users
-                var new_users = channel.users.filter(x => x != user.name);
-                new_users.push(user.name);
-                database.collection("channels").updateOne({ name: channel.name }, { $set: {users: new_users} }, function(err, result) {
+                channel.users = channel.users.filter(x => x != user.name);
+                channel.users.push(user.name);
+                database.collection("channels").findOneAndUpdate({ name: channel.name }, { $set: {users: channel.users} }, function(err, result) {
                     if (err) { return console.log(err) }
-                    addUserToGroupChannel(channel, result);
+                    console.log(result + " This line");
+                    addUserToGroupChannel(channel);
                 });
                 // Find users
             }
         }
 
-        function addUserToGroupChannel(old_channel, new_channel) {
+        function addUserToGroupChannel(channel) {
             console.log("addUserToGroupChannel");
             database.collection("groups").find({}, function(err, results) {
                 results.forEach(group => {
-                    if (group.channels != group.channels.filter(x => x.name != old_channel.name)) {
+                    if (group.channels != group.channels.filter(x => x.name != channel.name)) {
 
-                        var new_group_channels = group.channels.filter(x => x.name != old_channel.name);
-                        new_group_channels.push(new_channel);
-                        console.log(new_group_channels);
+                        var new_group_channels = group.channels.filter(x => x.name != channel.name);
+                        new_group_channels.push(channel);
 
-                        database.collection("groups").updateOne({ name: group.name }, { $set: {channels: group.channels} }, function(err, result) {
+                        database.collection("groups").updateOne({ name: group.name }, { $set: {channels: new_group_channels} }, function(err, result) {
                             if (err) { return console.log(err) }
                         });
                     }
