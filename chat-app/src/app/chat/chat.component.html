@@ -3,8 +3,8 @@
   <div class="card border-primary mb-3" style="max-width: 100rem;">
     <div class="card-header">{{channel_name}}</div>
     <div class="card-body">
-      <div id="chat_history" style="height:500px">
-        <div *ngFor="let message of messages">
+      <div id="chat_history">
+        <div *ngFor="let message of messages" style="margin:7px">
           {{message}}
         </div>
       </div>

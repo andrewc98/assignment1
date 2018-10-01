@@ -195,7 +195,8 @@ app.put('/api/groups/:id', function (req, res) {
                 if (type_name == "channels") {
                     findChannel(result);
                 } else {
-                    addUserToGroup(result);
+                    findUser(result);
+
                 }
             } else {
                 db.close();
@@ -203,10 +204,9 @@ app.put('/api/groups/:id', function (req, res) {
         });
 
         function addUserToGroup(group) {
-            console.log("addChannelToGroup");
-            if (group.users.find(x => x == channel_user_name) === undefined) {
-                console.log("Here!");
-                // Find users
+            console.log("addUserToGroup");
+            console.log(group.admin.find(x => x == channel_user_name));
+            if (group.admin.find(x => x == channel_user_name) === undefined) {
                 if (type_name == 'admin') {
                     console.log(type_name);
                     var new_admin = group.admin;
@@ -218,6 +218,11 @@ app.put('/api/groups/:id', function (req, res) {
                         });
                     });
                 }
+            }
+            if (group.users.find(x => x == channel_user_name) === undefined) {
+                console.log("Here!");
+                // Find users
+
                 var new_users = group.users;
                 new_users.push(channel_user_name);
                 database.collection("groups").updateOne({ name: group.name }, { $set: {users: new_users} }, function(err, result) {
@@ -225,6 +230,8 @@ app.put('/api/groups/:id', function (req, res) {
                     returnGroups();
                 });
                 // Find users
+            } else {
+                returnGroups();
             }
         }
 
@@ -237,6 +244,16 @@ app.put('/api/groups/:id', function (req, res) {
                 } else {
                     db.close();
                     console.log("Couldn't find channel");
+                }
+            });
+        }
+
+        function findUser(data) {
+            console.log('findUser');
+            database.collection("users").findOne({name: channel_user_name}, function(err, result) {
+                if (result) {
+                    console.log("Found User: " + channel_user_name);
+                    addUserToGroup(data);
                 }
             });
         }
