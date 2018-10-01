@@ -69,7 +69,11 @@ return this.http.put('http://localhost:3000/api/[Table]/' + data, body, httpOpti
 The above line of code is very similar to post, but it has an extension on the end of the route. This extension is used to identify what record needs modification. Body will contain the content that the user wishes to update to. The original record is obtained through the data variable. Lastly, deleteing.
 
 #### Delete
-The delete function is also called in way similar to the put function. “http://localhost:3000/api/users/:user_name”, unlike the put function, delete does not need any other parameters to work with. All of the connections between the different objects in the model are calculated by the Node server, which it will then delete those connections, and the data with it. Allowing the Node server to do all of the heavy lifting allows the client to seamless transfer between different pages without the presence of any notable pauses.
+Delete is promopted similarly to Put:
+```ts
+return this.http.delete('http://localhost:3000/api/channels/' + name);
+```
+Delete will find the record to delete, and remove it from the MongoDB. Delete will also return a new set of records, which is the same records as before, without the removed record.
 
 ## Angular Architecture
 Each component in this Angular app has an associated service, this is to allow a separation between the HttpClient and the component. Furthermore, functions of a service being called by another function allows a buffer zone of sorts. Before data makes it to the HttpClient to be sent the node server, it can be manipulated in a way to ensure that it is of correct format. For instance, the ability to stop a user from deleting themselves. Before data is sent to the HttpClient, the Angular component will first ensure that user they want to delete, is not equal to the one logged in at the current time. The model of data is stored in the JSON file, anything that goes in or comes out of the JSON files is strictly enforced to be of one format. The components access the services, the services access the model.
