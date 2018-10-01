@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../users.service';
+import { AlertPromise } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-login',
@@ -52,6 +53,9 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem("access_level", user.access_level);
           this.router.navigate(['/dashboard']);
         }
+      }
+      if (sessionStorage.getItem("username") == undefined) {
+        alert("Incorrect Username/Password");
       }
     }
   }
