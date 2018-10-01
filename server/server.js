@@ -67,7 +67,7 @@ require('./listen.js')(http);
 // --- App get for dashboard End
 /*
     Author -------- Andrew Campbell
-    Date ---------- 06/09/2018
+    Date ---------- 01/10/2018
     Description --- This function collects all of the content to be displayed for a user. Anything else is not displayed on the dashboard.
 */
 app.get('/api/dash', (req, res) => {
@@ -113,7 +113,7 @@ app.get('/api/dash', (req, res) => {
 // --- App get for groups Start
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 30/09/2018
     Description --- This function reads all of the groups from JSON and returns them.
 */
 app.get('/api/groups', (req, res) => {
@@ -133,7 +133,7 @@ app.get('/api/groups', (req, res) => {
 });
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 29/09/2018
     Description --- This function creates a new group, if it does not already exist.
 */
 app.post('/api/groups', function (req, res) {
@@ -171,7 +171,7 @@ app.post('/api/groups', function (req, res) {
 });
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 30/09/2018
     Description --- This function adds a channel to a group.
                 --- Removes a channel from a group.
                 --- Adds a user to a group.
@@ -262,7 +262,7 @@ app.put('/api/groups/:id', function (req, res) {
 });
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 29/09/2018
     Description --- This function will delete a group.
 */
 app.delete('/api/groups/:group_name', function (req, res) {
@@ -297,8 +297,8 @@ app.delete('/api/groups/:group_name', function (req, res) {
 // --- App get for channels Start
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
-    Description --- This function collects all of the data from the channels.json file. Then returns it.
+    Date ---------- 29/09/2018
+    Description --- This function collects all of the data from the MongoDB channels collection. Then returns it.
 */
 app.get('/api/channels', (req, res) => {
     console.log("get.api/channels");
@@ -319,7 +319,7 @@ app.get('/api/channels', (req, res) => {
 });
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 29/09/2018
     Description --- This function creates a new empty channel.
 */
 app.post('/api/channels', function (req, res) {
@@ -357,7 +357,7 @@ app.post('/api/channels', function (req, res) {
 });
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 01/10/2018
     Description --- This function is used to add and remove a user from a channel.
 */
 app.put('/api/channels/:id', function (req, res) {
@@ -438,7 +438,7 @@ app.put('/api/channels/:id', function (req, res) {
 });
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 01/10/2018
     Description --- This function is used to delete a channel, and all of it's connections it has to users/groups.
 */
 app.delete('/api/channels/:channel_name', function (req, res) {
@@ -482,8 +482,8 @@ app.delete('/api/channels/:channel_name', function (req, res) {
 // --- App get for users Start
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
-    Description --- This function will get all of the users from the user.json file.
+    Date ---------- 29/09/2018
+    Description --- This function will get all of the users from the MongoDB users collection.
 */
 app.get('/api/users', (req, res) => {
     console.log("get.api/users");
@@ -525,7 +525,7 @@ app.get('/api/users', (req, res) => {
 
 /*
     Author -------- Andrew Campbell
-    Date ---------- 06/09/2018
+    Date ---------- 29/09/2018
     Description --- This function will promote or demote a user, depending on the input recieved.
 */
 app.put('/api/users/:user_name', function (req, res) {
@@ -555,7 +555,7 @@ app.put('/api/users/:user_name', function (req, res) {
 });
 /*
     Author -------- Andrew Campbell
-    Date ---------- 05/09/2018
+    Date ---------- 29/09/2018
     Description --- This function is used to create a new user.
 */
 app.post('/api/users', function (req, res) {
@@ -599,7 +599,7 @@ app.post('/api/users', function (req, res) {
 
 /*
   Author ------- Andrew Campbell
-  Date --------- 02/09/2018
+  Date --------- 30/09/2018
   Description -- This function will delete a new user based on the input of the form.
 */
 app.delete('/api/users/:user_name', function (req, res) {
@@ -685,7 +685,13 @@ app.delete('/api/users/:user_name', function (req, res) {
 });
 // --- App get for users End
 
+
 // --- App get for chat
+/*
+  Author ------- Andrew Campbell
+  Date --------- 30/09/2018
+  Description -- This function will find the chat history from the MongoDB chat collection.
+*/
 app.get('/api/chat', (req, res) => {
     console.log("/api/chat");
     MongoClient.connect(url, {poolSize:10}, function(err, db) {

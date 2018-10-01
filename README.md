@@ -81,3 +81,9 @@ The angular architecture remains largely the same as the first assignment with C
 return this.http.delete('http://localhost:3000/api/[Table]/' + name);
 ```
 Upon reaching a service, the data will already be formatted and ready to reach the node server. All of the manipulation of the data is performed in the component. This is done to prevent unnecessarily large data from being sent through the server. The model is stored in MongoDB, under four different tables, "groups", "channels", "users", and "chat".
+
+## Tests
+1. Open a new terminal.
+2. Navigate to the folder "./server/".
+3. Run "npm test" in the terminal.
+4. Done!

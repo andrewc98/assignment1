@@ -57,6 +57,7 @@ export class ChatComponent implements OnInit {
 
   /*
     Author -------- Andrew Campbell
+    Date ---------- 01/10/2018
     Description --- This function is used to send a message through the socket.
   */
   sendMessage(){
@@ -66,7 +67,8 @@ export class ChatComponent implements OnInit {
 
   /*
     Author -------- Andrew Campbell
-    Description --- This function is called to end the socket connection.
+    Date ---------- 01/10/2018
+    Description --- This function is called to end the socket connection. It will also send a "Left the chat" message.
   */
   ngOnDestroy(){
     if (this.connection) {

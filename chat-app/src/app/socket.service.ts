@@ -46,6 +46,12 @@ export class SocketService {
     return observable;
   }
 
+
+  /*
+    Author -------- Andrew Campbell
+    Date ---------- 01/10/2018
+    Description --- This will retrieve the messages from the chat collection in MongoDB.
+  */
   getDBMessages(channel) {
     console.log("getDBMessages");
     return this.http.get('http://localhost:3000/api/chat/', {params: {name: channel}});
